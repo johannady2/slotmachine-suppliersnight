@@ -1,0 +1,48 @@
+CREATE TABLE grand_prize(id_grandprize INTEGER  PRIMARY KEY AUTOINCREMENT,name_grandprize varchar(40), description_grandprize varchar(200), status_grandprize integer, winner_official_receipt_grandprize varchar(40))
+
+ALTER TABLE grand_prize RENAME TO grand_prize_temp;
+
+CREATE TABLE "grand_prize"(id_grandprize INTEGER  PRIMARY KEY AUTOINCREMENT,name_grandprize varchar(40), description_grandprize varchar(200), status_grandprize integer, winner_official_receipt_grandprize varchar(40) UNIQUE,date_add_grandprize TIMESTAMP
+  DEFAULT CURRENT_TIMESTAMP, time_available_from TIMESTAMP, time_available_to TIMESTAMP);
+  
+  
+  <?php
+   class MyDB extends SQLite3
+   {
+      function __construct()
+      {
+         $this->open('gaisano_game.sqlite');
+      }
+   }
+   $db = new MyDB();
+   if(!$db){
+      echo $db->lastErrorMsg();
+   } else {
+      echo "Opened database successfully\n";
+   }
+?>
+
+
+
+/*
+var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);
+
+db.transaction(function (tx) {
+   tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (id unique, log)');
+   tx.executeSql('INSERT INTO LOGS (id, log) VALUES (1, "foobar")');
+   tx.executeSql('INSERT INTO LOGS (id, log) VALUES (2, "logmsg")');
+});
+
+db.transaction(function (tx) {
+   tx.executeSql('SELECT * FROM LOGS', [], function (tx, results) {
+      var len = results.rows.length, i;
+      msg = "<p>Found rows: " + len + "</p>";
+      document.querySelector('#status').innerHTML +=  msg;
+	
+      for (i = 0; i < len; i++){
+         alert(results.rows.item(i).log );
+      }
+	
+   }, null);
+});
+*/

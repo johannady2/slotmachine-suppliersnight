@@ -1,0 +1,537 @@
+@import url(https://fonts.googleapis.com/css?family=Orbitron);
+
+body
+{
+	background-image:url('images/background.jpg');
+	background-repeat: repeat;
+	margin:0px;
+	padding:0px;
+}
+
+button:focus {outline:0;}
+
+.container
+{
+	width: 600px;
+	margin: 20px auto 0 auto;
+}
+.machine-main-container
+{
+	width: 500px;
+	display: inline-block;
+	float: left;
+}
+
+.machine-side
+{
+
+	width: 100px;
+	float: left;
+	display: inline-block;
+	height: 492px;
+	margin-top: 20px;
+	position:relative;
+	border-top-right-radius: 15px;
+	
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#e2e2e2+5,fefefe+11,bababa+44,fefefe+84 */
+	background: #e2e2e2; /* Old browsers */
+	background: -moz-linear-gradient(top, #e2e2e2 5%, #fefefe 11%, #bababa 44%, #fefefe 84%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(5%,#e2e2e2), color-stop(11%,#fefefe), color-stop(44%,#bababa), color-stop(84%,#fefefe)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #e2e2e2 5%,#fefefe 11%,#bababa 44%,#fefefe 84%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #e2e2e2 5%,#fefefe 11%,#bababa 44%,#fefefe 84%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #e2e2e2 5%,#fefefe 11%,#bababa 44%,#fefefe 84%); /* IE10+ */
+	background: linear-gradient(to bottom, #e2e2e2 5%,#fefefe 11%,#bababa 44%,#fefefe 84%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe',GradientType=0 ); /* IE6-9 */
+}
+
+.machine-top , .machine-center , .machine-bottom
+{
+	margin: 0 auto;;
+	width: 100%;
+}
+
+.machine-top
+{
+	margin-top:20px;
+	height: 125px;
+	background-color:#0066D8;
+}
+.machine-center
+{
+	background-color:#ffffff;
+	height: 166.65px;
+	overflow: hidden;
+}
+.machine-bottom
+{
+	background-color:#172CA1;
+	height: 200px;
+	
+}
+
+
+
+.result
+{
+width:100%;
+}
+
+.slot-one-cont , .slot-two-cont , .slot-three-cont
+{
+  width: 33.3333%;
+  float:left;
+}
+
+ul.slot-one , ul.slot-two, ul.slot-three
+{
+	list-style: none;
+	height: 166.65px;
+	padding:0px;
+	margin:0px;
+}
+
+ul.slot-one > li,
+ul.slot-two > li,
+ul.slot-three > li
+{
+	height:166.65px;
+}
+
+.lever-btn
+{
+	position: absolute;
+	top: -9px;
+	width: 100%;
+	cursor: pointer;
+	background-color: transparent;
+	border: 0px;
+}
+
+
+
+.lever-design {
+	border-radius: 50%;
+	width: 90px;
+	height: 90px; 
+	
+	background-image: -moz-radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
+	background-image: -webkit-radial-gradient(45px 45px, circle cover, yellow, orange);
+	background-image: radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%);
+	
+	margin:0 auto;
+	position:relative;
+}
+
+.lever-label
+{
+	margin-top: 0px;
+	position: absolute;
+	top: 33px;
+	left: 16px;
+	font-family: "Orbitron",sans-serif;
+	color: #FF9000;
+	font-size: 19px;
+	text-transform: uppercase;
+}
+
+.lever-hole-design
+{
+
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,45484d+89 */
+	background: #000000; /* Old browsers */
+	background: -moz-linear-gradient(top, #000000 0%, #45484d 89%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#000000), color-stop(89%,#45484d)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #000000 0%,#45484d 89%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #000000 0%,#45484d 89%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #000000 0%,#45484d 89%); /* IE10+ */
+	background: linear-gradient(to bottom, #000000 0%,#45484d 89%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#45484d',GradientType=0 ); /* IE6-9 */
+
+	width: 31px;
+	height: 446px;
+	margin: 20px auto 0 auto;
+	
+
+}
+.clearfix
+{
+clear:both;
+}
+.row
+{
+	width:100%;
+}
+.col-half
+{
+	padding: 12px 4%;
+	min-height: 20px;
+	width: 42%;
+	float: left;
+	display: inline-block;
+}
+
+
+.inputfield , .inputfield2 /*inputfield remains width:100% in small screens while inputfield2 become 48%;*/
+{
+
+    padding: 0px;
+    width: 90%;
+    display: block;
+	font-size: 21px;
+	font-family: arial;
+	margin-top: 5px;
+}
+
+
+.inputfieldlabel , .inputfieldlabel2 /* inputfieldlabel will be displayed none when the screen is small*/
+{
+    color: rgb(255, 255, 255);
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.message
+{
+    background-color: rgba(0,0,0,0.9);
+    width: 57%;
+    margin: 0 auto;
+    margin-top: 15%;
+    position: fixed;
+    display: block;
+    z-index: 2;
+    font-family: 'Orbitron', sans-serif;
+    color: lime;
+    min-height: 50px;
+    font-size: 20px;
+    padding: 20px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+	display:none;
+	
+}
+.relativediv
+{
+	position:relative;
+}
+
+.closemessage
+{
+    position: absolute;
+    top: -20px;
+    right: -10px;
+}
+
+
+
+/*--------------------------------------------------------------
+11.0 Media Queries
+--------------------------------------------------------------*/
+
+@media screen and (min-width: 75em) {
+	/* width 1200px up */
+
+
+
+}
+
+
+@media only screen and (min-width: 62em) and (max-width: 75em) {
+	/* 992px and 1200px */
+	
+
+
+}
+
+
+@media screen and (max-width: 61.938em) {
+	/* width: 991px;  */
+}
+
+
+@media screen and (max-width: 48em) {
+	/* width 768px */
+	
+
+}
+@media screen and (max-width: 632px) {
+	/* width 632px */
+	
+	.container
+	{	
+		margin-top: 0px;
+		width: 100%;
+	}
+	.machine-main-container
+	{
+		width: 80%;
+	}
+	.machine-side
+	{
+		width: 20%;
+	}
+	
+	.machine-center
+	{
+
+		height: 163px;
+
+	}
+	
+	.machine-bottom
+	{
+		height: 204px;
+	}
+}
+
+@media screen and (max-width: 567px)
+{
+	.machine-center
+	{
+		height: 138px;
+	}
+	
+	.machine-side
+	{
+
+		height: 467px;
+
+	}
+	
+	.lever-hole-design
+	{
+		height: 407px;
+	}
+	
+	.inputfieldlabel , .inputfieldlabel2
+	{
+		color: #FFF;
+		font-family: "Orbitron",sans-serif;
+		font-weight: bold;
+		text-transform: uppercase;
+		font-size: 14px;
+	}
+	.inputfield
+	{
+
+    font-size: 18px;
+
+	}
+}
+
+
+@media screen and (max-width: 497px)
+{
+
+	.machine-center
+	{
+		height: 125px;
+	}
+	
+	.machine-side
+	{
+		height: 454px;
+	}
+	
+	
+	
+	.lever-design
+	{
+		width: 75px;
+		height: 75px;
+	}
+	
+	
+	.lever-label 
+	{
+		top: 27px;
+		left: 14px;
+		font-size: 15px;
+	}
+}
+
+@media screen and (max-width: 425px)
+{
+
+	.inputfieldlabel , .inputfieldlabel2
+	{
+		font-weight: normal;
+		font-size: 13px;
+	}
+	
+	.inputfield
+	{
+		font-size: 16px;
+		width: 100%;
+	}
+	.machine-center {
+		height: 107px;
+	}
+
+	.machine-bottom
+	{
+		height: 222px;
+	}
+}
+
+@media screen and (max-width:373px)
+{
+
+	.machine-top
+	{
+		height: 114px;
+	}
+	.machine-center
+	{
+		height: 99px;
+	}
+	
+	.machine-side
+	{
+		height: 435px;
+	}
+	
+	.lever-hole-design
+	{
+		width: 22px;
+		height: 391px;
+	}
+	
+	.lever-design
+	{
+		width: 60px;
+		height: 60px;
+	}
+	
+	.lever-label
+	{
+		top: 22px;
+		left: 11px;
+		font-size: 12px;
+	}
+
+	.col-half
+	{
+		padding: 2px 4%;
+		width: 92%;
+	}
+	
+	.inputfield2
+	{
+		width: 48%;
+		float:left;
+		padding: 0px;
+		display: inline-block;
+		font-size: 12px;
+		margin-top: 0px;
+	}
+
+	.inputfieldlabel2
+	{
+		width:48%; 
+		float:left;
+		color: rgb(255, 255, 255);
+		font-family: 'Orbitron', sans-serif;
+		text-transform: uppercase;
+		font-size:12px;
+	}
+	
+}
+@media screen and (max-width: 336px)
+{
+	.container
+	{
+		width: 192px;
+	}
+	.machine-main-container
+	{
+    width: 100%;
+	}
+	.machine-center
+	{
+    height: 76px;
+	}
+	
+	.machine-side
+	{
+		height: width;
+		width: 100%;
+		margin: 0px;
+		height: 37px;
+		border-radius: 0px;
+	}
+	
+	.lever-hole-design
+	{
+		display:none;
+	}
+	
+	.machine-top
+	{
+		margin-top: 0px;
+		height: 12px;
+		background: transparent linear-gradient(to bottom, #E2E2E2 5%, #FEFEFE 11%, #BABABA 44%, #FEFEFE 84%) repeat scroll 0% 0%;
+		border-bottom: 1px solid #f3f3f3;
+	}
+	.machine-center
+	{
+		height: 64px;
+	}
+	.machine-bottom
+	{
+		height: 143px;
+	}
+	
+	
+	.lever-btn
+	{
+		position:relative;
+		top:0px;
+		border: 0px none;
+		width: 100%;
+	}
+	
+	.lever-design
+	{
+		border-radius: 0px;
+		margin: 0px auto;
+		height: 36px;
+		width: 100%;
+
+	}
+	
+	.lever-label
+	{
+		margin: 0px;
+		position: relative;
+		padding-top: 6px;
+		top: 0px;
+		left: 0px;
+		font-size: 20px;
+		font-weight: bold;
+	}
+	
+	.inputfieldlabel
+	{
+		display:none;
+	}
+	
+	.inputfield
+	{
+			font-family: "Orbitron",sans-serif;
+	}
+}
+
+
+@media screen and (max-width: 30em)
+{
+
+}
+
+@media screen and (max-width: 310px)
+{
+
+}
