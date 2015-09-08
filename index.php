@@ -114,6 +114,14 @@ var last_refill_datetime;
 
 var store_time_start;// = store_datetime_start.substr(id.length - 8); . CAN ONLY WIN WITHIN THIS RANGE
 var store_time_end;// = store_datetime_end.substr(id.length - 8); . CAN ONLY WIN WITHIN THIS RANGE
+var last_refill_date;
+
+var percentArray = Array.apply(null, Array(100)).map(Number.prototype.valueOf,0);// [0, 0, 0, 0, 0,...,n] array with 100 zeroes
+
+for (i = 0; i <= 88; i++)
+{
+	percentArray[i] = 1;
+}
 
 
 
@@ -185,11 +193,38 @@ $.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_sta
 
 	if(store_date_startend_always_current == 1)//if 1, ignores date because plays_left and wins_left  are refilled when day begins.
 	{
-		store_time_start = store_datetime_start.substr(store_datetime_start.length - 8);
-		store_time_end = store_datetime_end.substr(store_datetime_end.length - 8);
+		//store_time_start = store_datetime_start.substr(store_datetime_start.length - 8);
+		//store_time_end = store_datetime_end.substr(store_datetime_end.length - 8);
+	
 		
 		//getTimeNow. check last refill date time.. if not refilled for today, refill. 
-	
+		var datenow_expld = getDateNow().split('-');
+		var datenow_YEAR = datenow_expld[0];
+		var datenow_MONTH = datenow_expld[1];
+		var datenow_DATE = datenow_expld[2];
+		
+		var datenow_NEWFORMAT = datenow_MONTH+'/'+datenow_DATE+'/'+datenow_YEAR;
+		
+		
+		last_refill_date = last_refill_datetime.substr(0,10);
+		var last_refill_date_expld = last_refill_date.split('-');
+		var last_refill_date_YEAR =last_refill_date_expld[0];
+		var last_refill_date_MONTH =last_refill_date_expld[1];
+		var last_refill_date_DATE =last_refill_date_expld[2];
+		
+		var last_refill_date_NEWFORMAT = last_refill_date_MONTH+'/'+last_refill_date_DATE+'/'+last_refill_date_YEAR;
+		
+		
+
+			if(compareDates(last_refill_date_NEWFORMAT,datenow_NEWFORMAT)== true)
+			{
+				alert('refill because last refill was not today');
+			}
+			else
+			{
+				alert('already refilled today');
+			}
+		
 	}
 
 	
@@ -197,7 +232,6 @@ $.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_sta
 	enableLever();
 
 });
-
 
 
 
@@ -632,6 +666,7 @@ function getTimeNow()
 	return TimeNow;
 }
 
+
 function checkIfTimeWithinTimeRange(extractedStartHour,extractedStartMinute,extractedEndHour,extractedEndMinute)
 {
 	var currentTime = new Date();
@@ -651,6 +686,13 @@ function checkIfTimeWithinTimeRange(extractedStartHour,extractedStartMinute,extr
 		return false;
 	}
 }
+
+function compareDates(date1, date2) {
+    return new Date(date1).getDate() < new Date(date2).getDate();
+}
+//alert(compareDates("1/1/2003", "1/2/2003"));  // returns true
+//alert(compareDates("1/3/2003", "1/2/2003")); //returns false
+
 
 </script>
   
