@@ -102,75 +102,123 @@
 
 <script>
 var id_preference;//NOT really important.. id of the only row in preference table
-var store_datetime_start; //applicable only if store_date_startend_always_current == 0
-var store_datetime_end;//applicable only if store_date_startend_always_current == 0
+var store_datetime_start; //DATE PART applicable only if store_date_startend_always_current == 0 . CAN ONLY WIN WITHIN THIS RANGE
+var store_datetime_end;//DATE applicable only if store_date_startend_always_current == 0  . CAN ONLY WIN WITHIN THIS RANGE
 var store_date_startend_always_current;//if == 1 then renew playable times everyday. if == 0, win only on set date.
 var playable_duration;//precomputed duration in seconds
 var playable_times; //AKA tickets.. when == zero, then you can't play anymore.
 var plays_left;
 var max_win_times_per_duration; //maximum number of wins per day
 var wins_left;
-$.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(forOnlineSingleData)
+var last_refill_datetime;
+
+var store_time_start;// = store_datetime_start.substr(id.length - 8); . CAN ONLY WIN WITHIN THIS RANGE
+var store_time_end;// = store_datetime_end.substr(id.length - 8); . CAN ONLY WIN WITHIN THIS RANGE
+
+
+
+/*DISABLE LEVER UNTIL API IS DONE*/
+ disableLever();
+
+$.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(data_from_api)
 {
-	$.each(forOnlineSingleData, function( index, value ) 
-						  {
+	$.each(data_from_api, function( index, value ) 
+	{
+		$.each( value, function( i, v )
+		{
 
-						
-									
-										$.each( value, function( i, v )
-										{
-											
-											
-												if(i == 'id_preference')
-												{	
-													id_preference = value[i];
-													
-												}
-												else if(i == 'store_datetime_start')
-												{
-													store_datetime_start = value[i];
+			if(i == 'id_preference')
+			{	
+				id_preference = value[i];
+				
+			}
+			else if(i == 'store_datetime_start')
+			{
+				store_datetime_start = value[i];
 
-												}
-												else if(i == 'store_datetime_end')
-												{
-													store_datetime_end = value[i];
-													
-												}
-												else if(i =='store_date_startend_always_current')
-												{
-													 store_date_startend_always_current = value[i];
-													
-												}
-												else if(i== 'playable_duration')
-												{
-													playable_duration = value[i];
-												}
-												else if(i == 'playable_times')
-												{
-													playable_times = value[i];
+			}
+			else if(i == 'store_datetime_end')
+			{
+				store_datetime_end = value[i];
+				
+			}
+			else if(i =='store_date_startend_always_current')
+			{
+				 store_date_startend_always_current = value[i];
+				
+			}
+			else if(i== 'playable_duration')
+			{
+				playable_duration = value[i];
+			}
+			else if(i == 'playable_times')
+			{
+				playable_times = value[i];
 
-												}
-												else if(i == 'plays_left')
-												{
-													plays_left = value[i];
-													$('#RemainingTickets').val(plays_left);
-												}
-												else if(i =='max_win_times_per_duration')
-												{
-													max_win_times_per_duration = value[i];
-													
-												}
-												else if(i == 'wins_left')
-												{
-													wins_left = value[i];
-													
-												}	
-										});
-										
-						
-								
-						  });
+			}
+			else if(i == 'plays_left')
+			{
+				plays_left = value[i];
+				$('#RemainingTickets').val(plays_left);
+			}
+			else if(i =='max_win_times_per_duration')
+			{
+				max_win_times_per_duration = value[i];
+				
+			}
+			else if(i == 'wins_left')
+			{
+				wins_left = value[i];
+				
+			}
+			else if(i == 'last_refill_datetime')
+			{
+					last_refill_datetime = value[i];
+			}
+		});
+	 });
+						  
+						  
+}).then(function()
+{
+	
+/*
+	if(store_date_startend_always_current == 1)//if 1, ignores date because plays_left and wins_left  are refilled when day begins.
+	{
+		store_time_start = store_datetime_start.substr(store_datetime_start.length - 8);
+		store_time_end = store_datetime_end.substr(store_datetime_end.length - 8);
+		
+		//getTimeNow. check last refill date time.. if not refilled for today, refill. 
+	}
+*/
+	
+	/*ENABLE LEVER WHEN READY TO START PLAYING*/
+	enableLever();
+
 });
+
+
+function checkIfTimeWithinTimeRange()//(extractedStartHour,extractedStartMinute,extractedStartSecond,extractedEndHour,extractedEndMinute,extractedEndSecond)
+{
+	var currentTime = new Date();
+	var startTime = new Date();
+	startTime.setHours(6);
+	startTime.setMinutes(30);
+	var endTime = new Date();
+	endTime.setHours(11);
+	endTime.setMinutes(30);
+
+	if ((currentTime.getTime() > startTime.getTime()) && (currentTime.getTime() < endTime.getTime()))
+	{
+	   return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
 var spinnerSlotOneResult = 0;
 var spinnerSlotTwoResult = 0;
 var leverclickcounter = 0;
@@ -180,6 +228,9 @@ var leverclickcounter = 0;
 
 $('.lever-btn').on('click', function()
 {
+
+
+	
 	leverclickcounter ++;
 	
 	spinnerSlotOneResult = 0;//reset
@@ -188,25 +239,9 @@ $('.lever-btn').on('click', function()
 
 	
 
-	
-		var meta = $(".lever-design");
-		meta.css("background-image", "-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(242,242,242)), color-stop(50%,rgb(147,147,147)), color-stop(62%,rgb(181,181,181)), color-stop(99%,rgb(232,232,232)))");
-		meta.css("background-image", "-webkit-linear-gradient(top,  rgb(242,242,242) 0%,rgb(147,147,147) 50%,rgb(181,181,181) 62%,rgb(232,232,232) 99%)");
-		meta.css("background-image", "-moz-linear-gradient(top,  rgb(242,242,242) 0%, rgb(147,147,147) 50%, rgb(181,181,181) 62%, rgb(232,232,232) 99%)");
-	
-	
-		$('.lever-label').css("color","#3E3C38");
+	 disableLever();
 
 
-
-
-		$('.lever-btn').attr('disabled','disabled');//prevents lever from being pulled again while the spinner is not done yet.
-
-		
-		if(leverclickcounter == 1)
-		{	
-			$('#ReceiptAmount').attr('disabled','disabled');//.removeAttr('disabled');
-		}
 		
 		
 		var remainingtickets = $('#RemainingTickets').val();
@@ -225,15 +260,59 @@ $('.lever-btn').on('click', function()
 				   cache: false,
 				   success: function(data)
 				   {
-					 	if($('#RemainingTickets').val() == 0)
-						{
-							$('#ReceiptAmount').removeAttr('disabled');
-						}
+
 						resetSlots();
-						//GrandWin();
-						//lose();
-						//majorWin();
-						minorWin();
+						
+						
+						if(store_date_startend_always_current == 1)//if 1, ignores date because plays_left and wins_left  are refilled when day begins.
+						{
+							store_time_start = store_datetime_start.substr(store_datetime_start.length - 8);
+							store_time_end = store_datetime_end.substr(store_datetime_end.length - 8);
+							
+							
+							if(checkIfTimeWithinTimeRange() == true)
+							{
+								alert('win or lose algo should run by now. with chance of winning.');
+								GrandWin();
+								//lose();
+								//majorWin();
+								//minorWin();
+							}
+							else
+							{
+								//alert('should be always lose() but since only grandWin is considered a win, majorWin and minorWin will be considered as lose() as well. randomize goes here.');
+								
+								
+								var consideredLoseArr= ['lose','majorWin','minorWin'];
+								var randomFromArray = randomFrom(consideredLoseArr);
+								if(randomFromArray  == 'lose')
+								{
+									lose();
+									console.log(randomFromArray);
+								}
+								else if(randomFromArray  == 'majorWin')
+								{
+									majorWin();
+									console.log(randomFromArray);
+								}
+								else if(randomFromArray  == 'minorWin')
+								{
+									minorWin();
+									console.log(randomFromArray);
+								}
+								else
+								{
+									console.log(randomFromArray);
+									alert('that wasnt supposed to happen');
+								}
+								
+
+							}
+						}
+						else
+						{
+							alert('consider set date code goes here.');
+						}
 						
 						var windowwidth = $(window).width();
 						//Please keep these the same as mediaqueries in style.css
@@ -267,6 +346,16 @@ $('.lever-btn').on('click', function()
 			$('.message').show();
 		}
 });
+
+
+
+function randomFrom(array)
+{
+	return array[Math.floor(Math.random() * array.length)];
+}
+
+
+
 
 $('.closemessage').on('click',function(){$('.message').hide();});
 
@@ -325,14 +414,7 @@ function spinner(whichSlot,durationPerResult,maxSpinTimes,randomResult)
 				setTimeout(function()
 				{
 					
-					$('.lever-btn').removeAttr('disabled');
-					
-					var meta = $(".lever-design");
-					meta.css("background-image", "-moz-radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%))");
-					meta.css("background-image", "-webkit-radial-gradient(45px 45px, circle cover, yellow, orange)");
-					meta.css("background-image", "radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%)");
-					
-					$('.lever-label').css("color","#FF9000");
+					enableLever();
 
 					
 				},1500);
@@ -508,8 +590,52 @@ function resetSlots()
 }
 
 
+function enableLever()
+{
+		$('.lever-btn').removeAttr('disabled');	
+		var meta = $(".lever-design");
+	meta.css("background-image", "-moz-radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%)");
+	meta.css("background-image", "-webkit-radial-gradient(45px 45px, circle cover, yellow, orange)");
+	meta.css("background-image", "radial-gradient(45px 45px 45deg, circle cover, yellow 0%, orange 100%, red 95%)");
+	
+	$('.lever-label').css("color","#FF9000");
+}
+
+function disableLever()
+{
+		var meta = $(".lever-design");
+		meta.css("background-image", "-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(242,242,242)), color-stop(50%,rgb(147,147,147)), color-stop(62%,rgb(181,181,181)), color-stop(99%,rgb(232,232,232)))");
+		meta.css("background-image", "-webkit-linear-gradient(top,  rgb(242,242,242) 0%,rgb(147,147,147) 50%,rgb(181,181,181) 62%,rgb(232,232,232) 99%)");
+		meta.css("background-image", "-moz-linear-gradient(top,  rgb(242,242,242) 0%, rgb(147,147,147) 50%, rgb(181,181,181) 62%, rgb(232,232,232) 99%)");
+	
+	
+		$('.lever-label').css("color","#3E3C38");
 
 
+
+
+		$('.lever-btn').attr('disabled','disabled');//prevents lever from being pulled again while the spinner is not done yet.
+
+		
+}
+
+function getDateNow()
+{
+	var DateTimeNow = new Date();
+	var DateNow = DateTimeNow.getFullYear() + '-' +  (( DateTimeNow.getMonth()+1 < 10 && DateTimeNow.getMonth() >= 0) ? '0'+(DateTimeNow.getMonth()+1) : DateTimeNow.getMonth()+1) + '-' +  (( DateTimeNow.getDate() < 10 && DateTimeNow.getDate() >= 0) ? '0'+DateTimeNow.getDate() : DateTimeNow.getDate()) ;
+
+	
+	return DateNow;
+}
+
+function getTimeNow()
+{
+	var DateTimeNow = new Date();
+
+	var TimeNow = (( DateTimeNow.getHours() < 10 && DateTimeNow.getHours() >= 0) ? '0'+DateTimeNow.getHours() : DateTimeNow.getHours()) + ':' + (( DateTimeNow.getMinutes() < 10 && DateTimeNow.getMinutes() > 0) ? '0'+DateTimeNow.getMinutes() : DateTimeNow.getMinutes())+ ':' + ((DateTimeNow.getSeconds() < 10 && DateTimeNow.getSeconds() > 0)?  '0'+DateTimeNow.getSeconds() : DateTimeNow.getSeconds());
+	
+	return TimeNow;
+}
 
 </script>
   
