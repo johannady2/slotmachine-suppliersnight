@@ -182,15 +182,16 @@ $.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_sta
 }).then(function()
 {
 	
-/*
+
 	if(store_date_startend_always_current == 1)//if 1, ignores date because plays_left and wins_left  are refilled when day begins.
 	{
 		store_time_start = store_datetime_start.substr(store_datetime_start.length - 8);
 		store_time_end = store_datetime_end.substr(store_datetime_end.length - 8);
 		
 		//getTimeNow. check last refill date time.. if not refilled for today, refill. 
+	
 	}
-*/
+
 	
 	/*ENABLE LEVER WHEN READY TO START PLAYING*/
 	enableLever();
@@ -198,25 +199,7 @@ $.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_sta
 });
 
 
-function checkIfTimeWithinTimeRange()//(extractedStartHour,extractedStartMinute,extractedStartSecond,extractedEndHour,extractedEndMinute,extractedEndSecond)
-{
-	var currentTime = new Date();
-	var startTime = new Date();
-	startTime.setHours(6);
-	startTime.setMinutes(30);
-	var endTime = new Date();
-	endTime.setHours(11);
-	endTime.setMinutes(30);
 
-	if ((currentTime.getTime() > startTime.getTime()) && (currentTime.getTime() < endTime.getTime()))
-	{
-	   return true;
-	}
-	else
-	{
-		return false;
-	}
-}
 
 
 var spinnerSlotOneResult = 0;
@@ -269,8 +252,20 @@ $('.lever-btn').on('click', function()
 							store_time_start = store_datetime_start.substr(store_datetime_start.length - 8);
 							store_time_end = store_datetime_end.substr(store_datetime_end.length - 8);
 							
+							var start_expld = store_time_start.split(':');
+							var end_expld = store_time_end.split(':');
+
+							var start_time_hours = start_expld[0];
+							var start_time_minutes = start_expld[1];
+							//var start_time_seconds = start_expld[2];
 							
-							if(checkIfTimeWithinTimeRange() == true)
+							var end_time_hours = end_expld[0];
+							var end_time_minutes = end_expld[1];
+							//var end_time_seconds = end_expld[2];
+							
+							alert(start_time_hours+':'+start_time_minutes+'-'+end_time_hours+':'+end_time_minutes);
+							
+							if(checkIfTimeWithinTimeRange(start_time_hours,start_time_minutes,end_time_hours,end_time_minutes) == true)
 							{
 								alert('win or lose algo should run by now. with chance of winning.');
 								GrandWin();
@@ -635,6 +630,26 @@ function getTimeNow()
 	var TimeNow = (( DateTimeNow.getHours() < 10 && DateTimeNow.getHours() >= 0) ? '0'+DateTimeNow.getHours() : DateTimeNow.getHours()) + ':' + (( DateTimeNow.getMinutes() < 10 && DateTimeNow.getMinutes() > 0) ? '0'+DateTimeNow.getMinutes() : DateTimeNow.getMinutes())+ ':' + ((DateTimeNow.getSeconds() < 10 && DateTimeNow.getSeconds() > 0)?  '0'+DateTimeNow.getSeconds() : DateTimeNow.getSeconds());
 	
 	return TimeNow;
+}
+
+function checkIfTimeWithinTimeRange(extractedStartHour,extractedStartMinute,extractedEndHour,extractedEndMinute)
+{
+	var currentTime = new Date();
+	var startTime = new Date();
+	startTime.setHours(extractedStartHour);
+	startTime.setMinutes(extractedStartMinute);
+	var endTime = new Date();
+	endTime.setHours(extractedEndHour);
+	endTime.setMinutes(extractedEndMinute);
+
+	if ((currentTime.getTime() > startTime.getTime()) && (currentTime.getTime() < endTime.getTime()))
+	{
+	   return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 </script>
