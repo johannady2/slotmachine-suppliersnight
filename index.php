@@ -214,16 +214,31 @@ $.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_sta
 		
 		var last_refill_date_NEWFORMAT = last_refill_date_MONTH+'/'+last_refill_date_DATE+'/'+last_refill_date_YEAR;
 		
-		
+		alert(wins_left);
 
-			if(compareDates(last_refill_date_NEWFORMAT,datenow_NEWFORMAT)== true)
+			if(compareDates(last_refill_date_NEWFORMAT,datenow_NEWFORMAT)== true)//if date now is greater than last refill date
 			{
-				alert('refill because last refill was not today');
+
+				$.ajax(
+				{
+				   type: "POST",
+				   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_last_refill_datetime_field.php",
+				   data: {"last_refill_datetime":getDateTimeNow(),"wins_left":max_win_times_per_duration,"plays_left":playable_times},
+				   datatype: "json",
+				   cache: false,
+				   success: function(data)
+				   {
+					   $('#RemainingTickets').val(playable_times);
+					   wins_left = max_win_times_per_duration;
+					   alert(data);
+					   alert(wins_left);
+				   }
+				});
 			}
-			else
+			/*else
 			{
 				alert('already refilled today');
-			}
+			}*/
 		
 	}
 
@@ -301,7 +316,7 @@ $('.lever-btn').on('click', function()
 							
 							if(checkIfTimeWithinTimeRange(start_time_hours,start_time_minutes,end_time_hours,end_time_minutes) == true)
 							{
-								alert('win or lose algo should run by now. with chance of winning.');
+								alert('win or lose algo.');
 								GrandWin();
 								//lose();
 								//majorWin();
@@ -666,6 +681,10 @@ function getTimeNow()
 	return TimeNow;
 }
 
+function getDateTimeNow()
+{
+	return getDateNow() + ' '+getTimeNow();
+}
 
 function checkIfTimeWithinTimeRange(extractedStartHour,extractedStartMinute,extractedEndHour,extractedEndMinute)
 {
@@ -688,7 +707,7 @@ function checkIfTimeWithinTimeRange(extractedStartHour,extractedStartMinute,extr
 }
 
 function compareDates(date1, date2) {
-    return new Date(date1).getDate() < new Date(date2).getDate();
+    return new Date(date1) < new Date(date2);
 }
 //alert(compareDates("1/1/2003", "1/2/2003"));  // returns true
 //alert(compareDates("1/3/2003", "1/2/2003")); //returns false
