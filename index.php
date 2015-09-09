@@ -67,7 +67,7 @@
 					<div class="col-half">
 						<!--row1col1-->
 						<label for="RemainingTickets" class="inputfieldlabel2"> Remaining Tickets:</label>
-						<input type="text" value="2" class="inputfield2" id="RemainingTickets" name="Remaining Tickets" disabled>
+						<input type="text" value="1" class="inputfield2" id="RemainingTickets" name="Remaining Tickets" disabled>
 					</div>
 					<div class="col-half">
 						<!--row1col2-->
@@ -101,8 +101,70 @@
   
 
 <script>
+var id_preference;//NOT really important.. id of the only row in preference table
+var store_datetime_start; //applicable only if store_date_startend_always_current == 0
+var store_datetime_end;//applicable only if store_date_startend_always_current == 0
+var store_date_startend_always_current;//if == 1 then renew playable times everyday. if == 0, win only on set date.
+var playable_duration;//precomputed duration in seconds
+var playable_times; //AKA tickets.. when == zero, then you can't play anymore.
+var plays_left;
+var max_win_times_per_duration; //maximum number of wins per day
+$.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(forOnlineSingleData)
+{
+	$.each(forOnlineSingleData, function( index, value ) 
+						  {
 
+						
+									
+										$.each( value, function( i, v )
+										{
+											
+											
+												if(i == 'id_preference')
+												{	
+													id_preference = value[i];
+													
+												}
+												else if(i == 'store_datetime_start')
+												{
+													store_datetime_start = value[i];
 
+												}
+												else if(i == 'store_datetime_end')
+												{
+													store_datetime_end = value[i];
+													
+												}
+												else if(i =='store_date_startend_always_current')
+												{
+													 store_date_startend_always_current = value[i];
+													
+												}
+												else if(i== 'playable_duration')
+												{
+													playable_duration = value[i];
+												}
+												else if(i == 'playable_times')
+												{
+													playable_times = value[i];
+
+												}
+												else if(i == 'plays_left')
+												{
+													plays_left = value[i];
+													$('#RemainingTickets').val(plays_left);
+												}
+												else if(i =='max_win_times_per_duration')
+												{
+													max_win_times_per_duration = value[i];
+													
+												}
+										});
+										
+						
+								
+						  });
+});
 var spinnerSlotOneResult = 0;
 var spinnerSlotTwoResult = 0;
 var leverclickcounter = 0;
@@ -119,7 +181,7 @@ $('.lever-btn').on('click', function()
 	spinnerSlotThreeResult = 0;//reset
 
 	
-	
+
 	
 		var meta = $(".lever-design");
 		meta.css("background-image", "-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(242,242,242)), color-stop(50%,rgb(147,147,147)), color-stop(62%,rgb(181,181,181)), color-stop(99%,rgb(232,232,232)))");
@@ -146,39 +208,52 @@ $('.lever-btn').on('click', function()
 		if($('#RemainingTickets').val() > 0)
 		{
 			$('#RemainingTickets').val(remainingtickets -1);
-		
-		
-			if($('#RemainingTickets').val() == 0)
-			{
-				$('#ReceiptAmount').removeAttr('disabled');
-			}
-			resetSlots();
-			//GrandWin();
-			//lose();
-			//majorWin();
-			minorWin();
-			
-			var windowwidth = $(window).width();
-			//Please keep these the same as mediaqueries in style.css
 			
 
-			if(windowwidth > 632)
-			{
-				leverDownAnimation(420,420);
-			}
-			else if(windowwidth <= 632 && windowwidth > 567)
-			{
-				leverDownAnimation(400,400);
-			}
-			else if(windowwidth <= 567 && windowwidth > 497)
-			{
-				leverDownAnimation(380,380);
-			}
-			else if((windowwidth <= 497 && windowwidth > 425)
-						|| (windowwidth <= 425 && windowwidth > 373))
-			{
-				leverDownAnimation(340,340);
-			}
+				$.ajax(
+				{
+				   type: "POST",
+				   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_plays_left_field.php",
+				   data: {"playsleft":remainingtickets-1},
+				   datatype: "json",
+				   cache: false,
+				   success: function(data)
+				   {
+					 	if($('#RemainingTickets').val() == 0)
+						{
+							$('#ReceiptAmount').removeAttr('disabled');
+						}
+						resetSlots();
+						//GrandWin();
+						//lose();
+						//majorWin();
+						minorWin();
+						
+						var windowwidth = $(window).width();
+						//Please keep these the same as mediaqueries in style.css
+						
+
+						if(windowwidth > 632)
+						{
+							leverDownAnimation(420,420);
+						}
+						else if(windowwidth <= 632 && windowwidth > 567)
+						{
+							leverDownAnimation(400,400);
+						}
+						else if(windowwidth <= 567 && windowwidth > 497)
+						{
+							leverDownAnimation(380,380);
+						}
+						else if((windowwidth <= 497 && windowwidth > 425)
+									|| (windowwidth <= 425 && windowwidth > 373))
+						{
+							leverDownAnimation(340,340);
+						}
+				   }
+				});
+		
+
 
 		}
 		else
