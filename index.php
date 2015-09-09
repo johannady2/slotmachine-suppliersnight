@@ -109,6 +109,7 @@ var playable_duration;//precomputed duration in seconds
 var playable_times; //AKA tickets.. when == zero, then you can't play anymore.
 var plays_left;
 var max_win_times_per_duration; //maximum number of wins per day
+var wins_left;
 $.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(forOnlineSingleData)
 {
 	$.each(forOnlineSingleData, function( index, value ) 
@@ -159,6 +160,11 @@ $.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_sta
 													max_win_times_per_duration = value[i];
 													
 												}
+												else if(i == 'wins_left')
+												{
+													wins_left = value[i];
+													
+												}	
 										});
 										
 						
