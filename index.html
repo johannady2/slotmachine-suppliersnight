@@ -97,10 +97,17 @@
 </div>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
+<script src="jquery-2.1.3.min.js"></script>
   
 
 <script>
+var spinnerSlotOneResult = 0;
+var spinnerSlotTwoResult = 0;
+var leverclickcounter = 0;
+
+
+
 var id_preference;//NOT really important.. id of the only row in preference table
 var store_datetime_start; //DATE PART applicable only if store_date_startend_always_current == 0 . CAN ONLY WIN WITHIN THIS RANGE
 var store_datetime_end;//DATE applicable only if store_date_startend_always_current == 0  . CAN ONLY WIN WITHIN THIS RANGE
@@ -126,7 +133,7 @@ var winChance_PERCENT;
 /*DISABLE LEVER UNTIL API IS DONE*/
  disableLever();
 
-$.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(data_from_api)
+$.when($.getJSON('http://192.168.0.11/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(data_from_api)
 {
 	$.each(data_from_api, function( index, value ) 
 	{
@@ -220,7 +227,7 @@ $.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_sta
 				$.ajax(
 				{
 				   type: "POST",
-				   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_last_refill_datetime_field.php",
+				   url: "http://192.168.0.11/slotmachine-suppliersnightBACKEND/process_update_last_refill_datetime_field.php",
 				   data: {"last_refill_datetime":getDateTimeNow(),"wins_left":max_win_times_per_duration,"plays_left":playable_times},
 				   datatype: "json",
 				   cache: false,
@@ -233,14 +240,14 @@ $.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_sta
 			}
 			/*else
 			{
-				alert('already refilled today');
+				////alert('already refilled today');
 			}*/
 			
 			
-			//alert(playable_duration+ ' ' +max_win_times_per_duration+' ' +playable_times);
+			//////alert(playable_duration+ ' ' +max_win_times_per_duration+' ' +playable_times);
 			//winChance_PERCENT = calculateWinChanceInPercent(playable_duration,max_win_times_per_duration,playable_times,playable_duration);//last parameter is "per". example if you want per hour , then make it 3600
 			
-			//alert('Chance Of Winning :' + winChance_PERCENT);
+			//////alert('Chance Of Winning :' + winChance_PERCENT);
 			/*
 			or (i = 0; i < winChance_PERCENT; i++)
 			{
@@ -258,12 +265,31 @@ $.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_sta
 
 });
 
+var auto_refresh = setInterval(
+function ()
+{
+
+	
+				$.getJSON( "http://192.168.0.11/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php", function( data_playsleft ) 
+				{
+				
+					$.each(data_playsleft, function( index, value ) 
+					{
+						$.each( value, function( i, v )
+						{
+
+							if(i == 'plays_left')
+							{
+								$('#RemainingTickets').val(v);
+							}
+						});
+					
+
+					});
+				});
 
 
-
-var spinnerSlotOneResult = 0;
-var spinnerSlotTwoResult = 0;
-var leverclickcounter = 0;
+}, 30);
 
 
 
@@ -283,7 +309,21 @@ $('.lever-btn').on('click', function()
 
 	 disableLever();
 
-
+	$.when($.getJSON('http://192.168.0.11/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php')).done(function(data_rem)
+	{
+		$.each(data_rem, function( index, value ) 
+		{
+			$.each( value, function( i, v )
+			{
+				if(i == 'plays_left')
+				{
+					$('#RemainingTickets').val(v);
+				}
+			});
+		});
+	}).then(function()
+	{
+		
 		
 		
 		var remainingtickets = $('#RemainingTickets').val();
@@ -297,8 +337,8 @@ $('.lever-btn').on('click', function()
 				$.ajax(
 				{
 				   type: "POST",
-				   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_plays_left_field.php",
-				   data: {"playsleft":remainingtickets},
+				   url: "http://192.168.0.11/slotmachine-suppliersnightBACKEND/process_update_plays_left_field.php",
+				   data: {"playsleft":remainingtickets},//not really needed anymore
 				   datatype: "json",
 				   cache: false,
 				   success: function(data)
@@ -326,29 +366,29 @@ $('.lever-btn').on('click', function()
 							var end_time_minutes = end_expld[1];
 							//var end_time_seconds = end_expld[2];
 							
-							//alert(start_time_hours+':'+start_time_minutes+'-'+end_time_hours+':'+end_time_minutes);
+							//////alert(start_time_hours+':'+start_time_minutes+'-'+end_time_hours+':'+end_time_minutes);
 							
 							if(checkIfTimeWithinTimeRange(start_time_hours,start_time_minutes,end_time_hours,end_time_minutes) == true)
 							{
-								//alert('win or lose algo.');
+								//////alert('win or lose algo.');
 								winChance_PERCENT = calculateWinChanceInPercent(playable_duration,wins_left,remainingtickets+1,playable_duration);//last parameter is "per". example if you want per hour , then make it 3600
 								//remainingtickets+1 because we are calculating this ticket's chance so we add back the subtracted 1
 			
 			
 								//winChance_PERCENT = calculateWinChanceInPercent_InfinitePlaysMode(playable_duration,wins_left,60);//might want to use duration left for first parameter.
-								alert('Chance Of Winning :' + winChance_PERCENT)
+								////alert('Chance Of Winning :' + winChance_PERCENT)
 								
 								var drawNumber=((Math.random() * 100) + 1 ).toFixed(2);
-								alert('draw'+drawNumber);
+								////alert('draw'+drawNumber);
 
 								if(parseFloat(drawNumber)<= parseFloat(winChance_PERCENT))
 								{
-									//alert('win');
+									//////alert('win');
 									GrandWin();
 								}
 								else
 								{
-									//alert('lose');
+									//////alert('lose');
 									lose();
 									//majorWin();
 									//minorWin();
@@ -358,7 +398,7 @@ $('.lever-btn').on('click', function()
 							}
 							else
 							{
-								alert('should be always lose() but since only grandWin is considered a win, majorWin and minorWin will be considered as lose() as well. randomize goes here.');
+								////alert('should be always lose() but since only grandWin is considered a win, majorWin and minorWin will be considered as lose() as well. randomize goes here.');
 								
 								
 								var consideredLoseArr= ['lose','majorWin','minorWin'];
@@ -381,7 +421,7 @@ $('.lever-btn').on('click', function()
 								else
 								{
 									console.log(randomFromArray);
-									alert('that wasnt supposed to happen');
+									////alert('that wasnt supposed to happen');
 								}
 								
 
@@ -389,7 +429,7 @@ $('.lever-btn').on('click', function()
 						}
 						else
 						{
-							alert('consider set date code goes here.');
+							////alert('consider set date code goes here.');
 						}
 						
 						var windowwidth = $(window).width();
@@ -423,6 +463,8 @@ $('.lever-btn').on('click', function()
 		{
 			$('.message').show();
 		}
+		
+	});
 });
 
 
@@ -572,7 +614,7 @@ function GrandWin()
 		$.ajax(
 		{
 		   type: "POST",
-		   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
+		   url: "http://192.168.0.11/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
 		   data: {"wins_left":wins_left},
 		   datatype: "json",
 		   cache: false,
@@ -760,8 +802,8 @@ function checkIfTimeWithinTimeRange(extractedStartHour,extractedStartMinute,extr
 function compareDates(date1, date2) {
     return new Date(date1) < new Date(date2);
 }
-//alert(compareDates("1/1/2003", "1/2/2003"));  // returns true
-//alert(compareDates("1/3/2003", "1/2/2003")); //returns false
+//////alert(compareDates("1/1/2003", "1/2/2003"));  // returns true
+//////alert(compareDates("1/3/2003", "1/2/2003")); //returns false
 
 
 function calculateWinChanceInPercent(duration,maxwins,maxplays,unit)//last parameter is "per". example if you want per hour , then make it 3600
@@ -774,8 +816,8 @@ Function ensures all prizes are won by the time all tickets(play times) run out.
 		var winsPerUnit =maxwins/numberOfUnit;
 		var DistributedPlaysPerUnit = maxplays/numberOfUnit;
 		
-		//alert('winsPerUnit:'+winsPerUnit);
-		//alert('DistributedPlaysPerUnit:'+DistributedPlaysPerUnit);
+		//////alert('winsPerUnit:'+winsPerUnit);
+		//////alert('DistributedPlaysPerUnit:'+DistributedPlaysPerUnit);
 		
 		
 		var percent = (winsPerUnit*100)/DistributedPlaysPerUnit;
