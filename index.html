@@ -680,6 +680,8 @@ function majorWin()
 
 function GrandWin()
 {
+
+	///alert('grandwin');
 	wins_left = wins_left -1;
 		$.ajax(
 		{
@@ -715,6 +717,7 @@ function GrandWin()
 
 function minorWin()
 {
+	
 	var winType = Math.floor(Math.random() * 3) + 1;
 	var arr = []
 	while(arr.length < 2)
@@ -793,6 +796,7 @@ function minorWin()
 
 function oneEight()
 {
+	//alert('oneEight');
 	var winType = Math.floor(Math.random() * 6) + 1;
 	var arr = []
 	while(arr.length < 2)
@@ -920,6 +924,7 @@ function oneEight()
 
 function twoEight()
 {
+	//alert('twoEight');
 	var winType = Math.floor(Math.random() * 3) + 1;
 	var arr = []
 	while(arr.length < 2)
@@ -994,6 +999,7 @@ function twoEight()
 
 function minorWin_noEight()
 {
+	//alert('minorWin_noEight');
 	var winType = Math.floor(Math.random() * 3) + 1;
 	var arr = []
 	while(arr.length < 2)
@@ -1069,7 +1075,7 @@ function minorWin_noEight()
 
 function majorWin_noEight()
 {
-
+	//alert('majorwin_noeight');
 	var arr = []
 	while(arr.length < 1)
 	{
@@ -1101,16 +1107,16 @@ function majorWin_noEight()
 	}
 	else
 	{
-		spinner("ul.slot-one",0,3,arr[1]);
+		spinner("ul.slot-one",0,3,1);
 		setTimeout(function()
 		{
-			spinner("ul.slot-two",100,4,arr[1]);
+			spinner("ul.slot-two",100,4,1);
 		}, 800);
 		
 		setTimeout(function()
 		{
 
-			spinner("ul.slot-three",120,5,arr[1]);
+			spinner("ul.slot-three",120,5,1);
 		}, 1200);
 	}
 
@@ -1122,7 +1128,7 @@ function majorWin_noEight()
 
 function lose_noEight()
 {
-
+	//alert('lose_noEight');
 	var arr = []
 	while(arr.length < 3){
 	  var randomnumber=Math.ceil(Math.random()*7)
