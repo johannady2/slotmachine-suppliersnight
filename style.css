@@ -29,7 +29,7 @@ button:focus {outline:0;}
 	float: left;
 	display: inline-block;
 	height: 492px;
-	margin-top: 20px;
+	/*margin-top: 20px;*/
 	position:relative;
 	border-top-right-radius: 15px;
 	
@@ -52,9 +52,10 @@ button:focus {outline:0;}
 
 .machine-top
 {
-	margin-top:20px;
+	/*margin-top:20px;*/
 	height: 125px;
 	background-color:#0066D8;
+	background-image: url("images/realslotmachine2.png");
 }
 .machine-center
 {
@@ -66,6 +67,8 @@ button:focus {outline:0;}
 {
 	background-color:#172CA1;
 	height: 200px;
+	background-image: url("images/realslotmachine3.png");
+	background-position: -6px -62px;
 	
 }
 
@@ -225,8 +228,37 @@ clear:both;
     right: -10px;
 }
 
+.machine-main-container-top
+{
+	background-image: url("images/realslotmachine1.png");
+	height: 195px;
+	width: 84%;
+	background-size: 100%;
+}
 
+.inputfieldtop
+{
+ color:#000000;
+	font-family: "Orbitron",sans-serif;
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 18px;
+	margin: 0px 11%;
+}
+.formachinetop
+{
+	padding-top: 27px;
+	margin: 0px auto;
+	display: block;
+	width: 100%;
+}
 
+#RemainingTickets
+{
+	width: 43%;
+	margin: 0px 11% 20px;
+	font-size: 32px;
+}
 /*--------------------------------------------------------------
 11.0 Media Queries
 --------------------------------------------------------------*/
