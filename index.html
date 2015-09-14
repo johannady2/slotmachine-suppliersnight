@@ -395,14 +395,69 @@ $('.lever-btn').on('click', function()
 								if(parseFloat(drawNumber)<= parseFloat(winChance_PERCENT))
 								{
 									//////alert('win');
-									GrandWin();
+									//GrandWin();
+									//oneEight();
+									
+									var consideredWinArr= ['GrandWin','oneEight','twoEight'];
+									var randomFromArray = randomFrom(consideredWinArr);
+									if(randomFromArray  == 'GrandWin')
+									{
+										GrandWin();
+										
+										console.log(randomFromArray);
+									}
+									else if(randomFromArray  == 'oneEight')
+									{
+										oneEight();
+										
+										console.log(randomFromArray);
+									}
+									else if(randomFromArray == 'twoEight')
+									{
+										twoEight();
+										console.log(randomFromArray);
+									}
+									else
+									{
+										console.log(randomFromArray);
+										////alert('that wasnt supposed to happen');
+									}
+
+									
 								}
 								else
 								{
 									//////alert('lose');
-									lose();
+									//lose();
 									//majorWin();
 									//minorWin();
+									
+									var consideredLoseArr= ['minorWin_noEight','majorWin_noEight','lose_noEight'];
+									var randomFromArray = randomFrom(consideredLoseArr);
+									if(randomFromArray  == 'minorWin_noEight')
+									{
+										minorWin_noEight();
+										
+										console.log(randomFromArray);
+									}
+									else if(randomFromArray  == 'majorWin_noEight')
+									{
+										majorWin_noEight();
+										
+										console.log(randomFromArray);
+									}
+									else if(randomFromArray  == 'lose_noEight')
+									{
+										
+										lose_noEight();
+										console.log(randomFromArray);
+									}
+									else
+									{
+										console.log(randomFromArray);
+										////alert('that wasnt supposed to happen');
+									}
+									
 								}
 								
 						
@@ -412,21 +467,24 @@ $('.lever-btn').on('click', function()
 								////alert('should be always lose() but since only grandWin is considered a win, majorWin and minorWin will be considered as lose() as well. randomize goes here.');
 								
 								
-								var consideredLoseArr= ['lose','majorWin','minorWin'];
+								var consideredLoseArr= ['minorWin_noEight','majorWin_noEight','lose_noEight'];
 								var randomFromArray = randomFrom(consideredLoseArr);
-								if(randomFromArray  == 'lose')
+								if(randomFromArray  == 'minorWin_noEight')
 								{
-									lose();
+									minorWin_noEight();
+									
 									console.log(randomFromArray);
 								}
-								else if(randomFromArray  == 'majorWin')
+								else if(randomFromArray  == 'majorWin_noEight')
 								{
-									majorWin();
+									majorWin_noEight();
+									
 									console.log(randomFromArray);
 								}
-								else if(randomFromArray  == 'minorWin')
+								else if(randomFromArray  == 'lose_noEight')
 								{
-									minorWin();
+									
+									lose_noEight();
 									console.log(randomFromArray);
 								}
 								else
@@ -617,10 +675,11 @@ function majorWin()
 	}, 1200);
 }
 
+
+
+
 function GrandWin()
 {
-
-
 	wins_left = wins_left -1;
 		$.ajax(
 		{
@@ -651,8 +710,6 @@ function GrandWin()
 				}, 1200);
 		   }
 		});
-
-	
 
 }
 
@@ -727,6 +784,367 @@ function minorWin()
 		}, 1200);
 	}
 	
+
+}
+
+
+
+
+
+function oneEight()
+{
+	var winType = Math.floor(Math.random() * 6) + 1;
+	var arr = []
+	while(arr.length < 2)
+	{
+	  var randomnumber=Math.ceil(Math.random()*7)
+	  var found=false;
+	  for(var i=0;i<arr.length;i++)
+	  {
+		if(arr[i]==randomnumber){found=true;break}
+	  }
+	  if(!found)arr[arr.length]=randomnumber;
+	}
+
+	
+	if(winType == 1)
+	{
+		spinner("ul.slot-one",0,3,8);
+	
+	
+		setTimeout(function()
+		{
+			//GrandWinSpinner("ul.slot-two",100,4);
+			spinner("ul.slot-two",100,4,arr[0]);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			//GrandWinSpinner("ul.slot-three",120,7);
+			spinner("ul.slot-three",100,4,arr[0]);
+		}, 1200);
+	}
+	else if(winType == 2)
+	{
+		spinner("ul.slot-one",0,3,arr[0]);
+	
+	
+		setTimeout(function()
+		{
+			//GrandWinSpinner("ul.slot-two",100,4);
+			spinner("ul.slot-two",100,4,8);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			//GrandWinSpinner("ul.slot-three",120,7);
+			spinner("ul.slot-three",100,4,arr[0]);
+		}, 1200);
+	}
+	else if(winType == 3)
+	{
+		spinner("ul.slot-one",0,3,arr[0]);
+	
+	
+		setTimeout(function()
+		{
+			//GrandWinSpinner("ul.slot-two",100,4);
+			spinner("ul.slot-two",100,4,arr[0]);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			//GrandWinSpinner("ul.slot-three",120,7);
+			spinner("ul.slot-three",100,4,8);
+		}, 1200);
+	}
+	else if(winType == 4)
+	{
+		spinner("ul.slot-one",0,3,8);
+	
+	
+		setTimeout(function()
+		{
+			//GrandWinSpinner("ul.slot-two",100,4);
+			spinner("ul.slot-two",100,4,arr[0]);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			//GrandWinSpinner("ul.slot-three",120,7);
+			spinner("ul.slot-three",100,4,arr[1]);
+		}, 1200);
+	}
+	else if(winType == 5)
+	{
+		spinner("ul.slot-one",0,3,arr[0]);
+	
+	
+		setTimeout(function()
+		{
+			//GrandWinSpinner("ul.slot-two",100,4);
+			spinner("ul.slot-two",100,4,8);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			//GrandWinSpinner("ul.slot-three",120,7);
+			spinner("ul.slot-three",100,4,arr[1]);
+		}, 1200);
+	}
+	else if(winType == 6)
+	{
+		spinner("ul.slot-one",0,3,arr[0]);
+	
+	
+		setTimeout(function()
+		{
+			//GrandWinSpinner("ul.slot-two",100,4);
+			spinner("ul.slot-two",100,4,arr[1]);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			//GrandWinSpinner("ul.slot-three",120,7);
+			spinner("ul.slot-three",100,4,8);
+		}, 1200);
+	}
+	
+}
+
+function twoEight()
+{
+	var winType = Math.floor(Math.random() * 3) + 1;
+	var arr = []
+	while(arr.length < 2)
+	{
+	  var randomnumber=Math.ceil(Math.random()*7)
+	  var found=false;
+	  for(var i=0;i<arr.length;i++)
+	  {
+		if(arr[i]==randomnumber){found=true;break}
+	  }
+	  if(!found)arr[arr.length]=randomnumber;
+	}
+
+	
+	if(winType == 1)
+	{
+		spinner("ul.slot-one",0,3,8);
+	
+	
+		setTimeout(function()
+		{
+			//GrandWinSpinner("ul.slot-two",100,4);
+			spinner("ul.slot-two",100,4,8);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			//GrandWinSpinner("ul.slot-three",120,7);
+			spinner("ul.slot-three",100,4,arr[0]);
+		}, 1200);
+	}
+	else if(winType == 2)
+	{
+		spinner("ul.slot-one",0,3,arr[0]);
+	
+	
+		setTimeout(function()
+		{
+			//GrandWinSpinner("ul.slot-two",100,4);
+			spinner("ul.slot-two",100,4,8);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			//GrandWinSpinner("ul.slot-three",120,7);
+			spinner("ul.slot-three",100,4,8);
+		}, 1200);
+	}
+	else if(winType == 3)
+	{
+		spinner("ul.slot-one",0,3,8);
+	
+	
+		setTimeout(function()
+		{
+			//GrandWinSpinner("ul.slot-two",100,4);
+			spinner("ul.slot-two",100,4,arr[0]);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			//GrandWinSpinner("ul.slot-three",120,7);
+			spinner("ul.slot-three",100,4,8);
+		}, 1200);
+	}
+	
+	
+}
+
+function minorWin_noEight()
+{
+	var winType = Math.floor(Math.random() * 3) + 1;
+	var arr = []
+	while(arr.length < 2)
+	{
+	  var randomnumber=Math.ceil(Math.random()*7)
+	  var found=false;
+	  for(var i=0;i<arr.length;i++)
+	  {
+		if(arr[i]==randomnumber){found=true;break}
+	  }
+	  if(!found)arr[arr.length]=randomnumber;
+	}
+
+	
+	if(winType == 1)
+	{
+		spinner("ul.slot-one",0,3,arr[0]);
+	
+	
+		setTimeout(function()
+		{
+			//GrandWinSpinner("ul.slot-two",100,4);
+			spinner("ul.slot-two",100,4,arr[0]);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			//GrandWinSpinner("ul.slot-three",120,7);
+			spinner("ul.slot-three",100,4,arr[1]);
+		}, 1200);
+	}
+	else if(winType == 2)
+	{
+		spinner("ul.slot-one",0,3,arr[0]);
+	
+	
+		setTimeout(function()
+		{
+			//GrandWinSpinner("ul.slot-two",100,4);
+			spinner("ul.slot-two",100,4,arr[1]);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			//GrandWinSpinner("ul.slot-three",120,7);
+			spinner("ul.slot-three",100,4,arr[0]);
+		}, 1200);
+	}
+	else if(winType == 3)
+	{
+		spinner("ul.slot-one",0,3,arr[1]);
+	
+	
+		setTimeout(function()
+		{
+			//GrandWinSpinner("ul.slot-two",100,4);
+			spinner("ul.slot-two",100,4,arr[0]);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			//GrandWinSpinner("ul.slot-three",120,7);
+			spinner("ul.slot-three",100,4,arr[0]);
+		}, 1200);
+	}
+	
+
+}
+
+
+function majorWin_noEight()
+{
+
+	var arr = []
+	while(arr.length < 1)
+	{
+	  var randomnumber=Math.ceil(Math.random()*7)
+	  var found=false;
+	  for(var i=0;i<arr.length;i++)
+	  {
+		if(arr[i]==randomnumber){found=true;break}
+	  }
+	  if(!found)arr[arr.length]=randomnumber;
+	}
+	
+	var spinres= arr[0];
+	
+	if(spinres != 6)
+	{
+		spinner("ul.slot-one",0,3,arr[0]);
+		setTimeout(function()
+		{
+			spinner("ul.slot-two",100,4,arr[0]);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			spinner("ul.slot-three",120,5,arr[0]);
+		}, 1200);
+	
+	}
+	else
+	{
+		spinner("ul.slot-one",0,3,arr[1]);
+		setTimeout(function()
+		{
+			spinner("ul.slot-two",100,4,arr[1]);
+		}, 800);
+		
+		setTimeout(function()
+		{
+
+			spinner("ul.slot-three",120,5,arr[1]);
+		}, 1200);
+	}
+
+
+
+
+}
+
+
+function lose_noEight()
+{
+
+	var arr = []
+	while(arr.length < 3){
+	  var randomnumber=Math.ceil(Math.random()*7)
+	  var found=false;
+	  for(var i=0;i<arr.length;i++){
+		if(arr[i]==randomnumber){found=true;break}
+	  }
+	  if(!found)arr[arr.length]=randomnumber;
+	}
+
+
+	spinner("ul.slot-one",0,3,arr[0]);
+	setTimeout(function()
+	{
+		spinner("ul.slot-two",100,4,arr[1]);
+	}, 800);
+	
+	setTimeout(function()
+	{
+
+		spinner("ul.slot-three",120,5,arr[2]);
+	}, 1200);
 
 }
 
