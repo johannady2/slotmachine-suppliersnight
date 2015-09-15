@@ -144,7 +144,7 @@ var winChance_PERCENT;
 /*DISABLE LEVER UNTIL API IS DONE*/
  disableLever();
 
-$.when($.getJSON('http://192.168.0.11/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(data_from_api)
+$.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(data_from_api)
 {
 	$.each(data_from_api, function( index, value ) 
 	{
@@ -238,7 +238,7 @@ $.when($.getJSON('http://192.168.0.11/slotmachine-suppliersnightBACKEND/game_sta
 				$.ajax(
 				{
 				   type: "POST",
-				   url: "http://192.168.0.11/slotmachine-suppliersnightBACKEND/process_update_last_refill_datetime_field.php",
+				   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_last_refill_datetime_field.php",
 				   data: {"last_refill_datetime":getDateTimeNow(),"wins_left":max_win_times_per_duration,"plays_left":playable_times},
 				   datatype: "json",
 				   cache: false,
@@ -281,7 +281,7 @@ function ()
 {
 
 	
-				$.getJSON( "http://192.168.0.11/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php", function( data_playsleft ) 
+				$.getJSON( "http://192.168.10.8/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php", function( data_playsleft ) 
 				{
 				
 					$.each(data_playsleft, function( index, value ) 
@@ -293,6 +293,10 @@ function ()
 							{
 								$('#RemainingTickets').val(v);
 							}
+							else if(i == 'wins_left')
+							{
+								wins_left = v;
+							}
 						});
 					
 
@@ -300,7 +304,7 @@ function ()
 				});
 
 
-}, 30);
+}, 100);
 
 
 
@@ -320,7 +324,7 @@ $('.lever-btn').on('click', function()
 
 	 disableLever();
 
-	$.when($.getJSON('http://192.168.0.11/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php')).done(function(data_rem)
+	$.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php')).done(function(data_rem)
 	{
 		$.each(data_rem, function( index, value ) 
 		{
@@ -329,6 +333,11 @@ $('.lever-btn').on('click', function()
 				if(i == 'plays_left')
 				{
 					$('#RemainingTickets').val(v);
+				}
+				else if(i == 'wins_left')
+				{
+					wins_left = v;
+					//alert(wins_left + ' from playsleft_apiv1.php');
 				}
 			});
 		});
@@ -348,7 +357,7 @@ $('.lever-btn').on('click', function()
 				$.ajax(
 				{
 				   type: "POST",
-				   url: "http://192.168.0.11/slotmachine-suppliersnightBACKEND/process_update_plays_left_field.php",
+				   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_plays_left_field.php",
 				   data: {"playsleft":remainingtickets},//not really needed anymore
 				   datatype: "json",
 				   cache: false,
@@ -682,11 +691,11 @@ function GrandWin()
 {
 
 	///alert('grandwin');
-	wins_left = wins_left -1;
+	wins_left = wins_left -1;//not needed anymore because we're subtracting in mysql.
 		$.ajax(
 		{
 		   type: "POST",
-		   url: "http://192.168.0.11/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
+		   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
 		   data: {"wins_left":wins_left},
 		   datatype: "json",
 		   cache: false,
@@ -796,205 +805,231 @@ function minorWin()
 
 function oneEight()
 {
-	//alert('oneEight');
-	var winType = Math.floor(Math.random() * 6) + 1;
-	var arr = []
-	while(arr.length < 2)
-	{
-	  var randomnumber=Math.ceil(Math.random()*7)
-	  var found=false;
-	  for(var i=0;i<arr.length;i++)
-	  {
-		if(arr[i]==randomnumber){found=true;break}
-	  }
-	  if(!found)arr[arr.length]=randomnumber;
-	}
+		wins_left = wins_left -1;//not needed anymore because we're subtracting in mysql.
+		$.ajax(
+		{
+		   type: "POST",
+		   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
+		   data: {"wins_left":wins_left},
+		   datatype: "json",
+		   cache: false,
+		   success: function(data)
+		   {
 
-	
-	if(winType == 1)
-	{
-		spinner("ul.slot-one",0,3,8);
-	
-	
-		setTimeout(function()
-		{
-			//GrandWinSpinner("ul.slot-two",100,4);
-			spinner("ul.slot-two",100,4,arr[0]);
-		}, 800);
-		
-		setTimeout(function()
-		{
+			//alert('oneEight');
+			var winType = Math.floor(Math.random() * 6) + 1;
+			var arr = []
+			while(arr.length < 2)
+			{
+			  var randomnumber=Math.ceil(Math.random()*7)
+			  var found=false;
+			  for(var i=0;i<arr.length;i++)
+			  {
+				if(arr[i]==randomnumber){found=true;break}
+			  }
+			  if(!found)arr[arr.length]=randomnumber;
+			}
 
-			//GrandWinSpinner("ul.slot-three",120,7);
-			spinner("ul.slot-three",100,4,arr[0]);
-		}, 1200);
-	}
-	else if(winType == 2)
-	{
-		spinner("ul.slot-one",0,3,arr[0]);
-	
-	
-		setTimeout(function()
-		{
-			//GrandWinSpinner("ul.slot-two",100,4);
-			spinner("ul.slot-two",100,4,8);
-		}, 800);
-		
-		setTimeout(function()
-		{
+			
+			if(winType == 1)
+			{
+				spinner("ul.slot-one",0,3,8);
+			
+			
+				setTimeout(function()
+				{
+					//GrandWinSpinner("ul.slot-two",100,4);
+					spinner("ul.slot-two",100,4,arr[0]);
+				}, 800);
+				
+				setTimeout(function()
+				{
 
-			//GrandWinSpinner("ul.slot-three",120,7);
-			spinner("ul.slot-three",100,4,arr[0]);
-		}, 1200);
-	}
-	else if(winType == 3)
-	{
-		spinner("ul.slot-one",0,3,arr[0]);
-	
-	
-		setTimeout(function()
-		{
-			//GrandWinSpinner("ul.slot-two",100,4);
-			spinner("ul.slot-two",100,4,arr[0]);
-		}, 800);
-		
-		setTimeout(function()
-		{
+					//GrandWinSpinner("ul.slot-three",120,7);
+					spinner("ul.slot-three",100,4,arr[0]);
+				}, 1200);
+			}
+			else if(winType == 2)
+			{
+				spinner("ul.slot-one",0,3,arr[0]);
+			
+			
+				setTimeout(function()
+				{
+					//GrandWinSpinner("ul.slot-two",100,4);
+					spinner("ul.slot-two",100,4,8);
+				}, 800);
+				
+				setTimeout(function()
+				{
 
-			//GrandWinSpinner("ul.slot-three",120,7);
-			spinner("ul.slot-three",100,4,8);
-		}, 1200);
-	}
-	else if(winType == 4)
-	{
-		spinner("ul.slot-one",0,3,8);
-	
-	
-		setTimeout(function()
-		{
-			//GrandWinSpinner("ul.slot-two",100,4);
-			spinner("ul.slot-two",100,4,arr[0]);
-		}, 800);
-		
-		setTimeout(function()
-		{
+					//GrandWinSpinner("ul.slot-three",120,7);
+					spinner("ul.slot-three",100,4,arr[0]);
+				}, 1200);
+			}
+			else if(winType == 3)
+			{
+				spinner("ul.slot-one",0,3,arr[0]);
+			
+			
+				setTimeout(function()
+				{
+					//GrandWinSpinner("ul.slot-two",100,4);
+					spinner("ul.slot-two",100,4,arr[0]);
+				}, 800);
+				
+				setTimeout(function()
+				{
 
-			//GrandWinSpinner("ul.slot-three",120,7);
-			spinner("ul.slot-three",100,4,arr[1]);
-		}, 1200);
-	}
-	else if(winType == 5)
-	{
-		spinner("ul.slot-one",0,3,arr[0]);
-	
-	
-		setTimeout(function()
-		{
-			//GrandWinSpinner("ul.slot-two",100,4);
-			spinner("ul.slot-two",100,4,8);
-		}, 800);
-		
-		setTimeout(function()
-		{
+					//GrandWinSpinner("ul.slot-three",120,7);
+					spinner("ul.slot-three",100,4,8);
+				}, 1200);
+			}
+			else if(winType == 4)
+			{
+				spinner("ul.slot-one",0,3,8);
+			
+			
+				setTimeout(function()
+				{
+					//GrandWinSpinner("ul.slot-two",100,4);
+					spinner("ul.slot-two",100,4,arr[0]);
+				}, 800);
+				
+				setTimeout(function()
+				{
 
-			//GrandWinSpinner("ul.slot-three",120,7);
-			spinner("ul.slot-three",100,4,arr[1]);
-		}, 1200);
-	}
-	else if(winType == 6)
-	{
-		spinner("ul.slot-one",0,3,arr[0]);
-	
-	
-		setTimeout(function()
-		{
-			//GrandWinSpinner("ul.slot-two",100,4);
-			spinner("ul.slot-two",100,4,arr[1]);
-		}, 800);
-		
-		setTimeout(function()
-		{
+					//GrandWinSpinner("ul.slot-three",120,7);
+					spinner("ul.slot-three",100,4,arr[1]);
+				}, 1200);
+			}
+			else if(winType == 5)
+			{
+				spinner("ul.slot-one",0,3,arr[0]);
+			
+			
+				setTimeout(function()
+				{
+					//GrandWinSpinner("ul.slot-two",100,4);
+					spinner("ul.slot-two",100,4,8);
+				}, 800);
+				
+				setTimeout(function()
+				{
 
-			//GrandWinSpinner("ul.slot-three",120,7);
-			spinner("ul.slot-three",100,4,8);
-		}, 1200);
-	}
+					//GrandWinSpinner("ul.slot-three",120,7);
+					spinner("ul.slot-three",100,4,arr[1]);
+				}, 1200);
+			}
+			else if(winType == 6)
+			{
+				spinner("ul.slot-one",0,3,arr[0]);
+			
+			
+				setTimeout(function()
+				{
+					//GrandWinSpinner("ul.slot-two",100,4);
+					spinner("ul.slot-two",100,4,arr[1]);
+				}, 800);
+				
+				setTimeout(function()
+				{
+
+					//GrandWinSpinner("ul.slot-three",120,7);
+					spinner("ul.slot-three",100,4,8);
+				}, 1200);
+			}
+			
+			}
+			});
 	
 }
 
 function twoEight()
 {
-	//alert('twoEight');
-	var winType = Math.floor(Math.random() * 3) + 1;
-	var arr = []
-	while(arr.length < 2)
-	{
-	  var randomnumber=Math.ceil(Math.random()*7)
-	  var found=false;
-	  for(var i=0;i<arr.length;i++)
-	  {
-		if(arr[i]==randomnumber){found=true;break}
-	  }
-	  if(!found)arr[arr.length]=randomnumber;
-	}
 
-	
-	if(winType == 1)
-	{
-		spinner("ul.slot-one",0,3,8);
-	
-	
-		setTimeout(function()
+		wins_left = wins_left -1;//not needed anymore because we're subtracting in mysql.
+		$.ajax(
 		{
-			//GrandWinSpinner("ul.slot-two",100,4);
-			spinner("ul.slot-two",100,4,8);
-		}, 800);
-		
-		setTimeout(function()
-		{
+		   type: "POST",
+		   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
+		   data: {"wins_left":wins_left},
+		   datatype: "json",
+		   cache: false,
+		   success: function(data)
+		   {
+				//alert('twoEight');
+				var winType = Math.floor(Math.random() * 3) + 1;
+				var arr = []
+				while(arr.length < 2)
+				{
+				  var randomnumber=Math.ceil(Math.random()*7)
+				  var found=false;
+				  for(var i=0;i<arr.length;i++)
+				  {
+					if(arr[i]==randomnumber){found=true;break}
+				  }
+				  if(!found)arr[arr.length]=randomnumber;
+				}
 
-			//GrandWinSpinner("ul.slot-three",120,7);
-			spinner("ul.slot-three",100,4,arr[0]);
-		}, 1200);
-	}
-	else if(winType == 2)
-	{
-		spinner("ul.slot-one",0,3,arr[0]);
-	
-	
-		setTimeout(function()
-		{
-			//GrandWinSpinner("ul.slot-two",100,4);
-			spinner("ul.slot-two",100,4,8);
-		}, 800);
-		
-		setTimeout(function()
-		{
+				
+				if(winType == 1)
+				{
+					spinner("ul.slot-one",0,3,8);
+				
+				
+					setTimeout(function()
+					{
+						//GrandWinSpinner("ul.slot-two",100,4);
+						spinner("ul.slot-two",100,4,8);
+					}, 800);
+					
+					setTimeout(function()
+					{
 
-			//GrandWinSpinner("ul.slot-three",120,7);
-			spinner("ul.slot-three",100,4,8);
-		}, 1200);
-	}
-	else if(winType == 3)
-	{
-		spinner("ul.slot-one",0,3,8);
-	
-	
-		setTimeout(function()
-		{
-			//GrandWinSpinner("ul.slot-two",100,4);
-			spinner("ul.slot-two",100,4,arr[0]);
-		}, 800);
-		
-		setTimeout(function()
-		{
+						//GrandWinSpinner("ul.slot-three",120,7);
+						spinner("ul.slot-three",100,4,arr[0]);
+					}, 1200);
+				}
+				else if(winType == 2)
+				{
+					spinner("ul.slot-one",0,3,arr[0]);
+				
+				
+					setTimeout(function()
+					{
+						//GrandWinSpinner("ul.slot-two",100,4);
+						spinner("ul.slot-two",100,4,8);
+					}, 800);
+					
+					setTimeout(function()
+					{
 
-			//GrandWinSpinner("ul.slot-three",120,7);
-			spinner("ul.slot-three",100,4,8);
-		}, 1200);
-	}
+						//GrandWinSpinner("ul.slot-three",120,7);
+						spinner("ul.slot-three",100,4,8);
+					}, 1200);
+				}
+				else if(winType == 3)
+				{
+					spinner("ul.slot-one",0,3,8);
+				
+				
+					setTimeout(function()
+					{
+						//GrandWinSpinner("ul.slot-two",100,4);
+						spinner("ul.slot-two",100,4,arr[0]);
+					}, 800);
+					
+					setTimeout(function()
+					{
+
+						//GrandWinSpinner("ul.slot-three",120,7);
+						spinner("ul.slot-three",100,4,8);
+					}, 1200);
+				}
 	
-	
+		}
+	});
 }
 
 function minorWin_noEight()
