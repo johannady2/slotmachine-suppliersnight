@@ -144,7 +144,7 @@ var winChance_PERCENT;
 /*DISABLE LEVER UNTIL API IS DONE*/
  disableLever();
 
-$.when($.getJSON('http://192.168.0.15/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(data_from_api)
+$.when($.getJSON('http://192.168.1.55:8080/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(data_from_api)
 {
 	$.each(data_from_api, function( index, value ) 
 	{
@@ -238,7 +238,7 @@ $.when($.getJSON('http://192.168.0.15/slotmachine-suppliersnightBACKEND/game_sta
 				$.ajax(
 				{
 				   type: "POST",
-				   url: "http://192.168.0.15/slotmachine-suppliersnightBACKEND/process_update_last_refill_datetime_field.php",
+				   url: "http://192.168.1.55:8080/slotmachine-suppliersnightBACKEND/process_update_last_refill_datetime_field.php",
 				   data: {"last_refill_datetime":getDateTimeNow(),"wins_left":max_win_times_per_duration,"plays_left":playable_times},
 				   datatype: "json",
 				   cache: false,
@@ -281,7 +281,7 @@ function ()
 {
 
 	
-				$.getJSON( "http://192.168.0.15/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php", function( data_playsleft ) 
+				$.getJSON( "http://192.168.1.55:8080/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php", function( data_playsleft ) 
 				{
 				
 					$.each(data_playsleft, function( index, value ) 
@@ -324,7 +324,7 @@ $('.lever-btn').on('click', function()
 
 	 disableLever();
 
-	$.when($.getJSON('http://192.168.0.15/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php')).done(function(data_rem)
+	$.when($.getJSON('http://192.168.1.55:8080/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php')).done(function(data_rem)
 	{
 		$.each(data_rem, function( index, value ) 
 		{
@@ -357,7 +357,7 @@ $('.lever-btn').on('click', function()
 				$.ajax(
 				{
 				   type: "POST",
-				   url: "http://192.168.0.15/slotmachine-suppliersnightBACKEND/process_update_plays_left_field.php",
+				   url: "http://192.168.1.55:8080/slotmachine-suppliersnightBACKEND/process_update_plays_left_field.php",
 				   data: {"playsleft":remainingtickets},//not really needed anymore
 				   datatype: "json",
 				   cache: false,
@@ -513,10 +513,13 @@ $('.lever-btn').on('click', function()
 						var windowwidth = $(window).width();
 						//Please keep these the same as mediaqueries in style.css
 						
-
-						if(windowwidth > 632)
+						if(windowwidth > 768)
 						{
-							leverDownAnimation(420,420);
+							leverDownAnimation(510,510);
+						}
+						else if(windowwidth <= 768 && windowwidth > 632)
+						{
+							leverDownAnimation(500,500);
 						}
 						else if(windowwidth <= 632 && windowwidth > 567)
 						{
@@ -695,7 +698,7 @@ function GrandWin()
 		$.ajax(
 		{
 		   type: "POST",
-		   url: "http://192.168.0.15/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
+		   url: "http://192.168.1.55:8080/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
 		   data: {"wins_left":wins_left},
 		   datatype: "json",
 		   cache: false,
@@ -809,7 +812,7 @@ function oneEight()
 		$.ajax(
 		{
 		   type: "POST",
-		   url: "http://192.168.0.15/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
+		   url: "http://192.168.1.55:8080/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
 		   data: {"wins_left":wins_left},
 		   datatype: "json",
 		   cache: false,
@@ -952,7 +955,7 @@ function twoEight()
 		$.ajax(
 		{
 		   type: "POST",
-		   url: "http://192.168.0.15/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
+		   url: "http://192.168.1.55:8080/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
 		   data: {"wins_left":wins_left},
 		   datatype: "json",
 		   cache: false,
