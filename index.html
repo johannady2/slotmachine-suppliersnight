@@ -136,7 +136,7 @@ var store_time_end;// = store_datetime_end.substr(id.length - 8); . CAN ONLY WIN
 var last_refill_date;
 
 var winChance_PERCENT;
-
+var remainingtickets;
 //var percentArray = Array.apply(null, Array(100)).map(Number.prototype.valueOf,0);// [0, 0, 0, 0, 0,...,n] array with 100 zeroes
 
 
@@ -295,6 +295,7 @@ function ()
 							
 					
 								$('#RemainingTickets').val(v);
+								remainingtickets = v;
 
 							}
 							else if(i == 'wins_left')
@@ -317,16 +318,14 @@ $('.lever-btn').on('click', function()
 {
 
 
-	
 	leverclickcounter ++;
 	
 	spinnerSlotOneResult = 0;//reset
 	spinnerSlotTwoResult = 0;//reset
 	spinnerSlotThreeResult = 0;//reset
 
-	
-
 	 disableLever();
+
 
 	$.when($.getJSON('http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php')).done(function(data_rem)
 	{
@@ -337,6 +336,7 @@ $('.lever-btn').on('click', function()
 				if(i == 'plays_left')
 				{
 					$('#RemainingTickets').val(v);
+					remainingtickets = v;
 				}
 				else if(i == 'wins_left')
 				{
@@ -348,102 +348,147 @@ $('.lever-btn').on('click', function()
 	}).then(function()
 	{
 		
-		
-		
-		var remainingtickets = $('#RemainingTickets').val();
-	
-		if($('#RemainingTickets').val() > 0)
-		{
-				remainingtickets = remainingtickets-1;
-			$('#RemainingTickets').val(remainingtickets);
-			
-			
-				$.ajax(
-				{
-				   type: "POST",
-				   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_plays_left_field.php",
-				   data: {"playsleft":remainingtickets},//not really needed anymore
-				   datatype: "json",
-				   cache: false,
-				   success: function(data)
-				   {
 
-						resetSlots();
-						//percentArray = shuffle(percentArray);
-						
-						
-						
-						
-						if(store_date_startend_always_current == 1)//if 1, ignores date because plays_left and wins_left  are refilled when day begins.
+		
+
+			if(remainingtickets > 0)
+			{
+					
+					var x;
+					$.ajax(
+					{
+					   type: "POST",
+					   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_plays_left_field.php",
+					   data: {"x":x},//not really needed anymore
+					   datatype: "json",
+					   cache: false,
+					   success: function(data)
+					   {
+							var dd= $.trim(data.toString());
+							
+
+						 if(dd == 'fail')
+						 {
+							
+							$('.message ,.blanket').show();
+						}
+						else
 						{
-							store_time_start = store_datetime_start.substr(store_datetime_start.length - 8);
-							store_time_end = store_datetime_end.substr(store_datetime_end.length - 8);
-							
-							var start_expld = store_time_start.split(':');
-							var end_expld = store_time_end.split(':');
 
-							var start_time_hours = start_expld[0];
-							var start_time_minutes = start_expld[1];
-							//var start_time_seconds = start_expld[2];
+						
+							resetSlots();
+							//percentArray = shuffle(percentArray);
 							
-							var end_time_hours = end_expld[0];
-							var end_time_minutes = end_expld[1];
-							//var end_time_seconds = end_expld[2];
 							
-							//////alert(start_time_hours+':'+start_time_minutes+'-'+end_time_hours+':'+end_time_minutes);
 							
-							if(checkIfTimeWithinTimeRange(start_time_hours,start_time_minutes,end_time_hours,end_time_minutes) == true)
+							
+							if(store_date_startend_always_current == 1)//if 1, ignores date because plays_left and wins_left  are refilled when day begins.
 							{
-								//////alert('win or lose algo.');
-								winChance_PERCENT = calculateWinChanceInPercent(playable_duration,wins_left,remainingtickets+1,playable_duration);//last parameter is "per". example if you want per hour , then make it 3600
-								//remainingtickets+1 because we are calculating this ticket's chance so we add back the subtracted 1
-			
-			
-								//winChance_PERCENT = calculateWinChanceInPercent_InfinitePlaysMode(playable_duration,wins_left,60);//might want to use duration left for first parameter.
-								////alert('Chance Of Winning :' + winChance_PERCENT)
+								store_time_start = store_datetime_start.substr(store_datetime_start.length - 8);
+								store_time_end = store_datetime_end.substr(store_datetime_end.length - 8);
 								
-								var drawNumber=((Math.random() * 100) + 1 ).toFixed(2);
-								////alert('draw'+drawNumber);
+								var start_expld = store_time_start.split(':');
+								var end_expld = store_time_end.split(':');
 
-								if(parseFloat(drawNumber)<= parseFloat(winChance_PERCENT))
+								var start_time_hours = start_expld[0];
+								var start_time_minutes = start_expld[1];
+								//var start_time_seconds = start_expld[2];
+								
+								var end_time_hours = end_expld[0];
+								var end_time_minutes = end_expld[1];
+								//var end_time_seconds = end_expld[2];
+								
+								//////alert(start_time_hours+':'+start_time_minutes+'-'+end_time_hours+':'+end_time_minutes);
+								
+								if(checkIfTimeWithinTimeRange(start_time_hours,start_time_minutes,end_time_hours,end_time_minutes) == true)
 								{
-									//////alert('win');
-									//GrandWin();
-									//oneEight();
+									//////alert('win or lose algo.');
+									winChance_PERCENT = calculateWinChanceInPercent(playable_duration,wins_left,remainingtickets,playable_duration);//last parameter is "per". example if you want per hour , then make it 3600. we'll just use the entire duration for now.
+								
+				
+				
+									//winChance_PERCENT = calculateWinChanceInPercent_InfinitePlaysMode(playable_duration,wins_left,60);//might want to use duration left for first parameter.
+									////alert('Chance Of Winning :' + winChance_PERCENT)
 									
-									var consideredWinArr= ['GrandWin','oneEight','twoEight'];
-									var randomFromArray = randomFrom(consideredWinArr);
-									if(randomFromArray  == 'GrandWin')
+									var drawNumber=((Math.random() * 100) + 1 ).toFixed(2);
+									////alert('draw'+drawNumber);
+									
+									
+
+									if(parseFloat(drawNumber)<= parseFloat(winChance_PERCENT))
 									{
-										GrandWin();
+										//////alert('win');
+										//GrandWin();
+										//oneEight();
 										
-										console.log(randomFromArray);
-									}
-									else if(randomFromArray  == 'oneEight')
-									{
-										oneEight();
+										var consideredWinArr= ['GrandWin','oneEight','twoEight'];
+										var randomFromArray = randomFrom(consideredWinArr);
+										if(randomFromArray  == 'GrandWin')
+										{
+											GrandWin();
+											
+											console.log(randomFromArray);
+										}
+										else if(randomFromArray  == 'oneEight')
+										{
+											oneEight();
+											
+											console.log(randomFromArray);
+										}
+										else if(randomFromArray == 'twoEight')
+										{
+											twoEight();
+											console.log(randomFromArray);
+										}
+										else
+										{
+											console.log(randomFromArray);
+											////alert('that wasnt supposed to happen');
+										}
+
 										
-										console.log(randomFromArray);
-									}
-									else if(randomFromArray == 'twoEight')
-									{
-										twoEight();
-										console.log(randomFromArray);
 									}
 									else
 									{
-										console.log(randomFromArray);
-										////alert('that wasnt supposed to happen');
+										//////alert('lose');
+										//lose();
+										//majorWin();
+										//minorWin();
+										
+										var consideredLoseArr= ['minorWin_noEight','majorWin_noEight','lose_noEight'];
+										var randomFromArray = randomFrom(consideredLoseArr);
+										if(randomFromArray  == 'minorWin_noEight')
+										{
+											minorWin_noEight();
+											
+											console.log(randomFromArray);
+										}
+										else if(randomFromArray  == 'majorWin_noEight')
+										{
+											majorWin_noEight();
+											
+											console.log(randomFromArray);
+										}
+										else if(randomFromArray  == 'lose_noEight')
+										{
+											
+											lose_noEight();
+											console.log(randomFromArray);
+										}
+										else
+										{
+											console.log(randomFromArray);
+											////alert('that wasnt supposed to happen');
+										}
+										
 									}
-
 									
+							
 								}
 								else
 								{
-									//////alert('lose');
-									//lose();
-									//majorWin();
-									//minorWin();
+									////alert('should be always lose() but since only grandWin is considered a win, majorWin and minorWin will be considered as lose() as well. randomize goes here.');
+									
 									
 									var consideredLoseArr= ['minorWin_noEight','majorWin_noEight','lose_noEight'];
 									var randomFromArray = randomFrom(consideredLoseArr);
@@ -471,85 +516,56 @@ $('.lever-btn').on('click', function()
 										////alert('that wasnt supposed to happen');
 									}
 									
+
 								}
-								
-						
 							}
 							else
 							{
-								////alert('should be always lose() but since only grandWin is considered a win, majorWin and minorWin will be considered as lose() as well. randomize goes here.');
-								
-								
-								var consideredLoseArr= ['minorWin_noEight','majorWin_noEight','lose_noEight'];
-								var randomFromArray = randomFrom(consideredLoseArr);
-								if(randomFromArray  == 'minorWin_noEight')
-								{
-									minorWin_noEight();
-									
-									console.log(randomFromArray);
-								}
-								else if(randomFromArray  == 'majorWin_noEight')
-								{
-									majorWin_noEight();
-									
-									console.log(randomFromArray);
-								}
-								else if(randomFromArray  == 'lose_noEight')
-								{
-									
-									lose_noEight();
-									console.log(randomFromArray);
-								}
-								else
-								{
-									console.log(randomFromArray);
-									////alert('that wasnt supposed to happen');
-								}
-								
-
+								////alert('consider set date code goes here.');
 							}
+							
+							var windowwidth = $(window).width();
+							//Please keep these the same as mediaqueries in style.css
+							
+							if(windowwidth > 768)
+							{
+								leverDownAnimation(510,510);
+							}
+							else if(windowwidth <= 768 && windowwidth > 632)
+							{
+								leverDownAnimation(500,500);
+							}
+							else if(windowwidth <= 632 && windowwidth > 567)
+							{
+								leverDownAnimation(400,400);
+							}
+							else if(windowwidth <= 567 && windowwidth > 497)
+							{
+								leverDownAnimation(380,380);
+							}
+							else if((windowwidth <= 497 && windowwidth > 425)
+										|| (windowwidth <= 425 && windowwidth > 373))
+							{
+								leverDownAnimation(340,340);
+							}
+			
 						}
-						else
-						{
-							////alert('consider set date code goes here.');
-						}
-						
-						var windowwidth = $(window).width();
-						//Please keep these the same as mediaqueries in style.css
-						
-						if(windowwidth > 768)
-						{
-							leverDownAnimation(510,510);
-						}
-						else if(windowwidth <= 768 && windowwidth > 632)
-						{
-							leverDownAnimation(500,500);
-						}
-						else if(windowwidth <= 632 && windowwidth > 567)
-						{
-							leverDownAnimation(400,400);
-						}
-						else if(windowwidth <= 567 && windowwidth > 497)
-						{
-							leverDownAnimation(380,380);
-						}
-						else if((windowwidth <= 497 && windowwidth > 425)
-									|| (windowwidth <= 425 && windowwidth > 373))
-						{
-							leverDownAnimation(340,340);
-						}
-				   }
-				});
-		
+					   }//success
+					});
+					return false;
 
-
-		}
-		else
-		{
-			$('.message ,.blanket').show();
-		}
+			
+			}
+			else
+			{
+				$('.message ,.blanket').show();
+			}
+			
 		
+	
 	});
+	
+
 });
 
 
@@ -709,23 +725,29 @@ function GrandWin()
 		   success: function(data)
 		   {
 		   
-		
-				//GrandWinSpinner("ul.slot-one",0,3);
-				spinner("ul.slot-one",0,3,8);
-				
-				
-				setTimeout(function()
+				if($.trim(data.toString())=='success')
 				{
-					//GrandWinSpinner("ul.slot-two",100,4);
-					spinner("ul.slot-two",100,4,8);
-				}, 800);
-				
-				setTimeout(function()
-				{
+					//GrandWinSpinner("ul.slot-one",0,3);
+					spinner("ul.slot-one",0,3,8);
+					
+					
+					setTimeout(function()
+					{
+						//GrandWinSpinner("ul.slot-two",100,4);
+						spinner("ul.slot-two",100,4,8);
+					}, 800);
+					
+					setTimeout(function()
+					{
 
-					//GrandWinSpinner("ul.slot-three",120,7);
-					spinner("ul.slot-three",100,4,8);
-				}, 1200);
+						//GrandWinSpinner("ul.slot-three",120,7);
+						spinner("ul.slot-three",100,4,8);
+					}, 1200);
+				}
+				else
+				{
+					lose_noEight();
+				}
 		   }
 		});
 
@@ -821,135 +843,141 @@ function oneEight()
 		   datatype: "json",
 		   cache: false,
 		   success: function(data)
-		   {
+		    {
 
-			//alert('oneEight');
-			var winType = Math.floor(Math.random() * 6) + 1;
-			var arr = []
-			while(arr.length < 2)
-			{
-			  var randomnumber=Math.ceil(Math.random()*7)
-			  var found=false;
-			  for(var i=0;i<arr.length;i++)
-			  {
-				if(arr[i]==randomnumber){found=true;break}
-			  }
-			  if(!found)arr[arr.length]=randomnumber;
-			}
+				if($.trim(data.toString())=='success')
+				{
+					//alert('oneEight');
+					var winType = Math.floor(Math.random() * 6) + 1;
+					var arr = []
+					while(arr.length < 2)
+					{
+					  var randomnumber=Math.ceil(Math.random()*7)
+					  var found=false;
+					  for(var i=0;i<arr.length;i++)
+					  {
+						if(arr[i]==randomnumber){found=true;break}
+					  }
+					  if(!found)arr[arr.length]=randomnumber;
+					}
 
-			
-			if(winType == 1)
-			{
-				spinner("ul.slot-one",0,3,8);
-			
-			
-				setTimeout(function()
-				{
-					//GrandWinSpinner("ul.slot-two",100,4);
-					spinner("ul.slot-two",100,4,arr[0]);
-				}, 800);
-				
-				setTimeout(function()
-				{
+					
+					if(winType == 1)
+					{
+						spinner("ul.slot-one",0,3,8);
+					
+					
+						setTimeout(function()
+						{
+							//GrandWinSpinner("ul.slot-two",100,4);
+							spinner("ul.slot-two",100,4,arr[0]);
+						}, 800);
+						
+						setTimeout(function()
+						{
 
-					//GrandWinSpinner("ul.slot-three",120,7);
-					spinner("ul.slot-three",100,4,arr[0]);
-				}, 1200);
-			}
-			else if(winType == 2)
-			{
-				spinner("ul.slot-one",0,3,arr[0]);
-			
-			
-				setTimeout(function()
-				{
-					//GrandWinSpinner("ul.slot-two",100,4);
-					spinner("ul.slot-two",100,4,8);
-				}, 800);
-				
-				setTimeout(function()
-				{
+							//GrandWinSpinner("ul.slot-three",120,7);
+							spinner("ul.slot-three",100,4,arr[0]);
+						}, 1200);
+					}
+					else if(winType == 2)
+					{
+						spinner("ul.slot-one",0,3,arr[0]);
+					
+					
+						setTimeout(function()
+						{
+							//GrandWinSpinner("ul.slot-two",100,4);
+							spinner("ul.slot-two",100,4,8);
+						}, 800);
+						
+						setTimeout(function()
+						{
 
-					//GrandWinSpinner("ul.slot-three",120,7);
-					spinner("ul.slot-three",100,4,arr[0]);
-				}, 1200);
-			}
-			else if(winType == 3)
-			{
-				spinner("ul.slot-one",0,3,arr[0]);
-			
-			
-				setTimeout(function()
-				{
-					//GrandWinSpinner("ul.slot-two",100,4);
-					spinner("ul.slot-two",100,4,arr[0]);
-				}, 800);
-				
-				setTimeout(function()
-				{
+							//GrandWinSpinner("ul.slot-three",120,7);
+							spinner("ul.slot-three",100,4,arr[0]);
+						}, 1200);
+					}
+					else if(winType == 3)
+					{
+						spinner("ul.slot-one",0,3,arr[0]);
+					
+					
+						setTimeout(function()
+						{
+							//GrandWinSpinner("ul.slot-two",100,4);
+							spinner("ul.slot-two",100,4,arr[0]);
+						}, 800);
+						
+						setTimeout(function()
+						{
 
-					//GrandWinSpinner("ul.slot-three",120,7);
-					spinner("ul.slot-three",100,4,8);
-				}, 1200);
-			}
-			else if(winType == 4)
-			{
-				spinner("ul.slot-one",0,3,8);
-			
-			
-				setTimeout(function()
-				{
-					//GrandWinSpinner("ul.slot-two",100,4);
-					spinner("ul.slot-two",100,4,arr[0]);
-				}, 800);
-				
-				setTimeout(function()
-				{
+							//GrandWinSpinner("ul.slot-three",120,7);
+							spinner("ul.slot-three",100,4,8);
+						}, 1200);
+					}
+					else if(winType == 4)
+					{
+						spinner("ul.slot-one",0,3,8);
+					
+					
+						setTimeout(function()
+						{
+							//GrandWinSpinner("ul.slot-two",100,4);
+							spinner("ul.slot-two",100,4,arr[0]);
+						}, 800);
+						
+						setTimeout(function()
+						{
 
-					//GrandWinSpinner("ul.slot-three",120,7);
-					spinner("ul.slot-three",100,4,arr[1]);
-				}, 1200);
-			}
-			else if(winType == 5)
-			{
-				spinner("ul.slot-one",0,3,arr[0]);
-			
-			
-				setTimeout(function()
-				{
-					//GrandWinSpinner("ul.slot-two",100,4);
-					spinner("ul.slot-two",100,4,8);
-				}, 800);
-				
-				setTimeout(function()
-				{
+							//GrandWinSpinner("ul.slot-three",120,7);
+							spinner("ul.slot-three",100,4,arr[1]);
+						}, 1200);
+					}
+					else if(winType == 5)
+					{
+						spinner("ul.slot-one",0,3,arr[0]);
+					
+					
+						setTimeout(function()
+						{
+							//GrandWinSpinner("ul.slot-two",100,4);
+							spinner("ul.slot-two",100,4,8);
+						}, 800);
+						
+						setTimeout(function()
+						{
 
-					//GrandWinSpinner("ul.slot-three",120,7);
-					spinner("ul.slot-three",100,4,arr[1]);
-				}, 1200);
-			}
-			else if(winType == 6)
-			{
-				spinner("ul.slot-one",0,3,arr[0]);
-			
-			
-				setTimeout(function()
-				{
-					//GrandWinSpinner("ul.slot-two",100,4);
-					spinner("ul.slot-two",100,4,arr[1]);
-				}, 800);
-				
-				setTimeout(function()
-				{
+							//GrandWinSpinner("ul.slot-three",120,7);
+							spinner("ul.slot-three",100,4,arr[1]);
+						}, 1200);
+					}
+					else if(winType == 6)
+					{
+						spinner("ul.slot-one",0,3,arr[0]);
+					
+					
+						setTimeout(function()
+						{
+							//GrandWinSpinner("ul.slot-two",100,4);
+							spinner("ul.slot-two",100,4,arr[1]);
+						}, 800);
+						
+						setTimeout(function()
+						{
 
-					//GrandWinSpinner("ul.slot-three",120,7);
-					spinner("ul.slot-three",100,4,8);
-				}, 1200);
-			}
-			
-			}
+							//GrandWinSpinner("ul.slot-three",120,7);
+							spinner("ul.slot-three",100,4,8);
+						}, 1200);
+					}
+				}
+				else
+				{
+					lose_noEight();
+				}
+			}//success;
 			});
-	
+			
 }
 
 function twoEight()
@@ -965,6 +993,9 @@ function twoEight()
 		   cache: false,
 		   success: function(data)
 		   {
+		   
+		   	if($.trim(data.toString())=='success')
+			{
 				//alert('twoEight');
 				var winType = Math.floor(Math.random() * 3) + 1;
 				var arr = []
@@ -1034,8 +1065,12 @@ function twoEight()
 						spinner("ul.slot-three",100,4,8);
 					}, 1200);
 				}
-	
-		}
+			}
+			else
+			{
+				lose_noEight();
+			}
+		}//success
 	});
 }
 
@@ -1293,12 +1328,14 @@ Function ensures all prizes are won by the time all tickets(play times) run out.
 		var winsPerUnit =maxwins/numberOfUnit;
 		var DistributedPlaysPerUnit = maxplays/numberOfUnit;
 		
-		//////alert('winsPerUnit:'+winsPerUnit);
-		//////alert('DistributedPlaysPerUnit:'+DistributedPlaysPerUnit);
+		alert('winsPerUnit:'+winsPerUnit);
+		alert('DistributedPlaysPerUnit:'+DistributedPlaysPerUnit);
 		
 		
 		var percent = (winsPerUnit*100)/DistributedPlaysPerUnit;
 		
+		
+		alert(percent);
 	
 		return percent.toFixed(2);
 
