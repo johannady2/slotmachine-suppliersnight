@@ -145,7 +145,11 @@ var remainingtickets;
 /*DISABLE LEVER UNTIL API IS DONE*/
  disableLever();
 
+<<<<<<< HEAD
 $.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(data_from_api)
+=======
+$.when($.getJSON('http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(data_from_api)
+>>>>>>> origin/master
 {
 	$.each(data_from_api, function( index, value ) 
 	{
@@ -239,7 +243,11 @@ $.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_sta
 				$.ajax(
 				{
 				   type: "POST",
+<<<<<<< HEAD
 				   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_last_refill_datetime_field.php",
+=======
+				   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_last_refill_datetime_field.php",
+>>>>>>> origin/master
 				   data: {"last_refill_datetime":getDateTimeNow(),"wins_left":max_win_times_per_duration,"plays_left":playable_times},
 				   datatype: "json",
 				   cache: false,
@@ -282,7 +290,11 @@ function ()
 {
 
 	
+<<<<<<< HEAD
 				$.getJSON( "http://192.168.10.8/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php", function( data_playsleft ) 
+=======
+				$.getJSON( "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php", function( data_playsleft ) 
+>>>>>>> origin/master
 				{
 				
 					$.each(data_playsleft, function( index, value ) 
@@ -327,7 +339,11 @@ $('.lever-btn').on('click', function()
 	 disableLever();
 
 
+<<<<<<< HEAD
 	$.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php')).done(function(data_rem)
+=======
+	$.when($.getJSON('http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php')).done(function(data_rem)
+>>>>>>> origin/master
 	{
 		$.each(data_rem, function( index, value ) 
 		{
@@ -358,7 +374,11 @@ $('.lever-btn').on('click', function()
 					$.ajax(
 					{
 					   type: "POST",
+<<<<<<< HEAD
 					   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_plays_left_field.php",
+=======
+					   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_plays_left_field.php",
+>>>>>>> origin/master
 					   data: {"x":x},//not really needed anymore
 					   datatype: "json",
 					   cache: false,
@@ -718,7 +738,11 @@ function GrandWin()
 		$.ajax(
 		{
 		   type: "POST",
+<<<<<<< HEAD
 		   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
+=======
+		   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
+>>>>>>> origin/master
 		   data: {"wins_left":wins_left},
 		   datatype: "json",
 		   cache: false,
@@ -838,7 +862,11 @@ function oneEight()
 		$.ajax(
 		{
 		   type: "POST",
+<<<<<<< HEAD
 		   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
+=======
+		   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
+>>>>>>> origin/master
 		   data: {"wins_left":wins_left},
 		   datatype: "json",
 		   cache: false,
@@ -987,7 +1015,11 @@ function twoEight()
 		$.ajax(
 		{
 		   type: "POST",
+<<<<<<< HEAD
 		   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
+=======
+		   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
+>>>>>>> origin/master
 		   data: {"wins_left":wins_left},
 		   datatype: "json",
 		   cache: false,
@@ -1328,14 +1360,23 @@ Function ensures all prizes are won by the time all tickets(play times) run out.
 		var winsPerUnit =maxwins/numberOfUnit;
 		var DistributedPlaysPerUnit = maxplays/numberOfUnit;
 		
+<<<<<<< HEAD
 		//alert('winsPerUnit:'+winsPerUnit);
 		//alert('DistributedPlaysPerUnit:'+DistributedPlaysPerUnit);
+=======
+		alert('winsPerUnit:'+winsPerUnit);
+		alert('DistributedPlaysPerUnit:'+DistributedPlaysPerUnit);
+>>>>>>> origin/master
 		
 		
 		var percent = (winsPerUnit*100)/DistributedPlaysPerUnit;
 		
 		
+<<<<<<< HEAD
 		//alert(percent);
+=======
+		alert(percent);
+>>>>>>> origin/master
 	
 		return percent.toFixed(2);
 
