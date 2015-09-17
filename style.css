@@ -196,15 +196,15 @@ clear:both;
 
 .message
 {
-    background-color: rgba(0,0,0,0.9);
+    background-color: rgba(255,255,255,1);
     width: 57%;
     margin: 0 auto;
-    margin-top: 15%;
+    margin-top: 25%;
     position: fixed;
     display: block;
     z-index: 2;
     font-family: 'Orbitron', sans-serif;
-    color: lime;
+    color: #000000;
     min-height: 50px;
     font-size: 20px;
     padding: 20px;
@@ -259,6 +259,19 @@ clear:both;
 	margin: 0px 11% 20px;
 	font-size: 32px;
 }
+
+.blanket
+{
+	display: none;
+	background-color: rgba(0,0,0,0.5);
+	height: 100%;
+	position: fixed;
+	width: 100%;
+	top: 0px;
+	left: 0px;
+	z-index: 1;
+	
+}
 /*--------------------------------------------------------------
 11.0 Media Queries
 --------------------------------------------------------------*/
@@ -283,19 +296,33 @@ clear:both;
 	/* width: 991px;  */
 }
 
-
-@media screen and (max-width: 48em) {
-	/* width 768px */
+@media screen and (max-width: 800px) {
+	/* width 800px */
 	
-
-}
-@media screen and (max-width: 632px) {
-	/* width 632px */
-	
+	.message
+	{
+		
+		width: 70%;
+		height:100px;
+		margin-top: 56%;
+		
+	}
 	.container
 	{	
 		margin-top: 0px;
 		width: 100%;
+	}
+	
+	.machine-main-container-top
+	{
+		height: 249px;
+		width: 80%;
+	}
+	
+	.machine-top 
+	{
+		height: 159px;
+		background-size:100%;
 	}
 	.machine-main-container
 	{
@@ -304,8 +331,81 @@ clear:both;
 	.machine-side
 	{
 		width: 20%;
+		height: 614px;
 	}
 	
+	.machine-center
+	{
+
+		height: 190px;
+
+	}
+	
+	.machine-bottom
+	{
+		background-size: 100%;
+		height: 266px
+	}
+	
+	.lever-hole-design
+	{
+		height: 522px;
+		margin: 40px auto 0px;
+	}
+
+}
+@media screen and (max-width: 48em) {
+	/* width 768px */
+	
+	.container
+	{	
+		margin-top: 0px;
+		
+	}
+	
+	.machine-main-container-top
+	{
+		height: 240px;
+		
+	}
+
+	.machine-side
+	{
+		height: 615px;
+	}
+	
+	.machine-center
+	{
+
+		height: 190px;
+
+	}
+	
+	.machine-bottom
+	{
+		background-size: 100%;
+		height: 266px
+	}
+	
+	.lever-hole-design
+	{
+		
+		height: 527px;
+		margin: 40px auto 0px;
+	}
+
+}
+@media screen and (max-width: 632px) {
+	/* width 632px */
+	
+	.machine-top 
+	{
+		height: 127px;
+	}
+	.machine-main-container-top
+	{	
+		height: 197px;
+	}	
 	.machine-center
 	{
 
@@ -317,20 +417,42 @@ clear:both;
 	{
 		height: 204px;
 	}
+	
+	.machine-side
+	{
+		height: 493px;
+	}
+	
+	.lever-hole-design 
+	{
+		height: 415px;
+	}
 }
 
 @media screen and (max-width: 567px)
 {
+	
+	.machine-main-container-top 
+	{
+		height: 176px;
+	}
+	.machine-top 
+	{
+		height: 123px;
+	}
 	.machine-center
 	{
 		height: 138px;
 	}
 	
-	.machine-side
+	.machine-side 
 	{
-
-		height: 467px;
-
+		height: 443px;
+	}
+	
+	.machine-bottom
+	{
+		height: 181px;
 	}
 	
 	.lever-hole-design
@@ -352,12 +474,40 @@ clear:both;
     font-size: 18px;
 
 	}
+	
+	.lever-hole-design
+	{
+		height: 368px;
+	}
 }
 
 
 @media screen and (max-width: 497px)
 {
+	.message
+	{
+		margin-top: 32%;
+	}
+	
+	.machine-main-container-top
+	{
+		
+		background: transparent;
+		height: 43px;
+	}
+	
+	.inputfieldtop
+	{
+		color: #ffffff;
+	}
+	
+	.machine-top
+	{
 
+		background-color: #171717;
+		background-image: none;
+
+	}
 	.machine-center
 	{
 		height: 125px;
@@ -368,7 +518,12 @@ clear:both;
 		height: 454px;
 	}
 	
-	
+	.machine-bottom 
+	{
+		height: 207px;
+		background-image: none;
+		background-color: #021506;
+	}
 	
 	.lever-design
 	{
@@ -387,7 +542,7 @@ clear:both;
 
 @media screen and (max-width: 425px)
 {
-
+	
 	.inputfieldlabel , .inputfieldlabel2
 	{
 		font-weight: normal;
@@ -474,9 +629,34 @@ clear:both;
 }
 @media screen and (max-width: 336px)
 {
+	
+	.message
+	{
+		margin-top: 20%;
+	}
+	
 	.container
 	{
 		width: 192px;
+	}
+	.machine-main-container-top
+	{
+		margin-top: 0px;
+		height: 12px;
+		background: transparent linear-gradient(to bottom, #E2E2E2 5%, #FEFEFE 11%, #BABABA 44%, #FEFEFE 84%) repeat scroll 0% 0%;
+		border-bottom: 1px solid #F3F3F3;
+		width: 100%;
+	}
+	
+	
+	.inputfieldtop 
+	{
+		font-size:11px;
+	}
+	#RemainingTickets 
+	{
+		font-size: 16px;
+		margin: 1px 17px;
 	}
 	.machine-main-container
 	{
@@ -503,10 +683,7 @@ clear:both;
 	
 	.machine-top
 	{
-		margin-top: 0px;
-		height: 12px;
-		background: transparent linear-gradient(to bottom, #E2E2E2 5%, #FEFEFE 11%, #BABABA 44%, #FEFEFE 84%) repeat scroll 0% 0%;
-		border-bottom: 1px solid #f3f3f3;
+		height:57px;
 	}
 	.machine-center
 	{
@@ -514,10 +691,9 @@ clear:both;
 	}
 	.machine-bottom
 	{
-		height: 143px;
+		height: 101px;
 	}
-	
-	
+		
 	.lever-btn
 	{
 		position:relative;
