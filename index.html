@@ -145,15 +145,7 @@ var remainingtickets;
 /*DISABLE LEVER UNTIL API IS DONE*/
  disableLever();
 
-<<<<<<< HEAD
 $.when($.getJSON('http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(data_from_api)
-=======
-<<<<<<< HEAD
-$.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(data_from_api)
-=======
-$.when($.getJSON('http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/game_start_api_v1.php')).done(function(data_from_api)
->>>>>>> origin/master
->>>>>>> origin/master
 {
 	$.each(data_from_api, function( index, value ) 
 	{
@@ -247,15 +239,7 @@ $.when($.getJSON('http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/gam
 				$.ajax(
 				{
 				   type: "POST",
-<<<<<<< HEAD
 				   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_last_refill_datetime_field.php",
-=======
-<<<<<<< HEAD
-				   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_last_refill_datetime_field.php",
-=======
-				   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_last_refill_datetime_field.php",
->>>>>>> origin/master
->>>>>>> origin/master
 				   data: {"last_refill_datetime":getDateTimeNow(),"wins_left":max_win_times_per_duration,"plays_left":playable_times},
 				   datatype: "json",
 				   cache: false,
@@ -298,15 +282,7 @@ function ()
 {
 
 	
-<<<<<<< HEAD
 				$.getJSON( "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php", function( data_playsleft ) 
-=======
-<<<<<<< HEAD
-				$.getJSON( "http://192.168.10.8/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php", function( data_playsleft ) 
-=======
-				$.getJSON( "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php", function( data_playsleft ) 
->>>>>>> origin/master
->>>>>>> origin/master
 				{
 				
 					$.each(data_playsleft, function( index, value ) 
@@ -351,15 +327,7 @@ $('.lever-btn').on('click', function()
 	 disableLever();
 
 
-<<<<<<< HEAD
 	$.when($.getJSON('http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php')).done(function(data_rem)
-=======
-<<<<<<< HEAD
-	$.when($.getJSON('http://192.168.10.8/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php')).done(function(data_rem)
-=======
-	$.when($.getJSON('http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/playsleft_apiv1.php')).done(function(data_rem)
->>>>>>> origin/master
->>>>>>> origin/master
 	{
 		$.each(data_rem, function( index, value ) 
 		{
@@ -382,7 +350,6 @@ $('.lever-btn').on('click', function()
 		
 
 		
-<<<<<<< HEAD
 
 			if(remainingtickets > 0)
 			{
@@ -400,29 +367,6 @@ $('.lever-btn').on('click', function()
 							var dd= $.trim(data.toString());
 							
 
-=======
-
-			if(remainingtickets > 0)
-			{
-					
-					var x;
-					$.ajax(
-					{
-					   type: "POST",
-<<<<<<< HEAD
-					   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_plays_left_field.php",
-=======
-					   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_plays_left_field.php",
->>>>>>> origin/master
-					   data: {"x":x},//not really needed anymore
-					   datatype: "json",
-					   cache: false,
-					   success: function(data)
-					   {
-							var dd= $.trim(data.toString());
-							
-
->>>>>>> origin/master
 						 if(dd == 'fail')
 						 {
 							
@@ -434,17 +378,10 @@ $('.lever-btn').on('click', function()
 						
 							resetSlots();
 							//percentArray = shuffle(percentArray);
-<<<<<<< HEAD
 							
 							
 							
 							
-=======
-							
-							
-							
-							
->>>>>>> origin/master
 							if(store_date_startend_always_current == 1)//if 1, ignores date because plays_left and wins_left  are refilled when day begins.
 							{
 								store_time_start = store_datetime_start.substr(store_datetime_start.length - 8);
@@ -472,17 +409,10 @@ $('.lever-btn').on('click', function()
 				
 									//winChance_PERCENT = calculateWinChanceInPercent_InfinitePlaysMode(playable_duration,wins_left,60);//might want to use duration left for first parameter.
 									////alert('Chance Of Winning :' + winChance_PERCENT)
-<<<<<<< HEAD
 									
 									var drawNumber=((Math.random() * 100) + 1 ).toFixed(2);
 									////alert('draw'+drawNumber);
 									
-=======
-									
-									var drawNumber=((Math.random() * 100) + 1 ).toFixed(2);
-									////alert('draw'+drawNumber);
-									
->>>>>>> origin/master
 									
 
 									if(parseFloat(drawNumber)<= parseFloat(winChance_PERCENT))
@@ -788,15 +718,7 @@ function GrandWin()
 		$.ajax(
 		{
 		   type: "POST",
-<<<<<<< HEAD
 		   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
-=======
-<<<<<<< HEAD
-		   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
-=======
-		   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
->>>>>>> origin/master
->>>>>>> origin/master
 		   data: {"wins_left":wins_left},
 		   datatype: "json",
 		   cache: false,
@@ -916,15 +838,7 @@ function oneEight()
 		$.ajax(
 		{
 		   type: "POST",
-<<<<<<< HEAD
 		   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
-=======
-<<<<<<< HEAD
-		   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
-=======
-		   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
->>>>>>> origin/master
->>>>>>> origin/master
 		   data: {"wins_left":wins_left},
 		   datatype: "json",
 		   cache: false,
@@ -1073,15 +987,7 @@ function twoEight()
 		$.ajax(
 		{
 		   type: "POST",
-<<<<<<< HEAD
 		   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
-=======
-<<<<<<< HEAD
-		   url: "http://192.168.10.8/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
-=======
-		   url: "http://192.168.0.15:8080/slotmachine-suppliersnightBACKEND/process_update_wins_left_field.php",
->>>>>>> origin/master
->>>>>>> origin/master
 		   data: {"wins_left":wins_left},
 		   datatype: "json",
 		   cache: false,
@@ -1422,32 +1328,14 @@ Function ensures all prizes are won by the time all tickets(play times) run out.
 		var winsPerUnit =maxwins/numberOfUnit;
 		var DistributedPlaysPerUnit = maxplays/numberOfUnit;
 		
-<<<<<<< HEAD
 		alert('winsPerUnit:'+winsPerUnit);
 		alert('DistributedPlaysPerUnit:'+DistributedPlaysPerUnit);
-=======
-<<<<<<< HEAD
-		//alert('winsPerUnit:'+winsPerUnit);
-		//alert('DistributedPlaysPerUnit:'+DistributedPlaysPerUnit);
-=======
-		alert('winsPerUnit:'+winsPerUnit);
-		alert('DistributedPlaysPerUnit:'+DistributedPlaysPerUnit);
->>>>>>> origin/master
->>>>>>> origin/master
 		
 		
 		var percent = (winsPerUnit*100)/DistributedPlaysPerUnit;
 		
 		
-<<<<<<< HEAD
 		alert(percent);
-=======
-<<<<<<< HEAD
-		//alert(percent);
-=======
-		alert(percent);
->>>>>>> origin/master
->>>>>>> origin/master
 	
 		return percent.toFixed(2);
 
