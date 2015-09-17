@@ -491,7 +491,7 @@ clear:both;
 	
 	.machine-main-container-top
 	{
-		
+		background-image:none;
 		background: transparent;
 		height: 43px;
 	}
